@@ -1,10 +1,10 @@
 package com.jdm.legends.users.integration;
 
-import com.jdm.legends.users.repository.TemporaryUserRepository;
+import com.jdm.legends.users.controller.dto.HistoryBidTemporaryCustomerRequest;
+import com.jdm.legends.users.repository.TemporaryCustomerRepository;
 import com.jdm.legends.users.service.dto.Car;
 import com.jdm.legends.users.service.dto.HistoryBid;
-import com.jdm.legends.users.service.dto.HistoryBidTemporaryUser;
-import com.jdm.legends.users.service.dto.TemporaryUser;
+import com.jdm.legends.users.service.entity.TemporaryCustomer;
 import com.jdm.legends.users.utils.UtilsMock;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.jdm.legends.users.utils.UtilsMock.buildCarRequest;
+import static com.jdm.legends.users.utils.UtilsMock.getTempCustomerDTOMock;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -27,25 +28,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @ActiveProfiles("test-in-memory")
-class TemporaryUserServiceIT {
+class TemporaryCustomerServiceIT {
 
     @Autowired
     private MockMvc mvc;
 
     @Autowired
-    private TemporaryUserRepository repository;
+    private TemporaryCustomerRepository repository;
 
     @Test
     void shouldSaveTempUserSuccessfully() throws Exception {
         Car car = buildCarRequest();
         HistoryBid historyBid = car.getHistoryBidList().get(0);
-        TemporaryUser temporaryUser = historyBid.getTemporaryUsersList().stream().findFirst().orElse(new TemporaryUser());
+        TemporaryCustomer temporaryCustomer = historyBid.getTemporaryUsersList().stream().findFirst().orElse(new TemporaryCustomer());
 
-        HistoryBidTemporaryUser request = HistoryBidTemporaryUser.builder()
-                .temporaryUser(temporaryUser)
-                .historyBid(historyBid)
-                .build();
-
+        HistoryBidTemporaryCustomerRequest request = new HistoryBidTemporaryCustomerRequest(historyBid, getTempCustomerDTOMock());
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/temporary-user/save")
                 .contentType(APPLICATION_JSON)
                 .content(UtilsMock.writeJsonAsString(request))
@@ -58,9 +55,9 @@ class TemporaryUserServiceIT {
     void shouldGetAllTempUsers() throws Exception {
         Car car = buildCarRequest();
         HistoryBid historyBid = car.getHistoryBidList().get(0);
-        TemporaryUser temporaryUser = historyBid.getTemporaryUsersList().stream().findFirst().orElse(new TemporaryUser());
+        TemporaryCustomer temporaryCustomer = historyBid.getTemporaryUsersList().stream().findFirst().orElse(new TemporaryCustomer());
 
-        repository.save(temporaryUser);
+        repository.save(temporaryCustomer);
 
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/temporary-user").accept(APPLICATION_JSON);
 

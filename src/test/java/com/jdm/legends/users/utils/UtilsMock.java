@@ -2,9 +2,12 @@ package com.jdm.legends.users.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.jdm.legends.users.controller.dto.TemporaryCustomerDTO;
 import com.jdm.legends.users.service.dto.Car;
 import com.jdm.legends.users.service.dto.HistoryBid;
-import com.jdm.legends.users.service.dto.TemporaryUser;
+import com.jdm.legends.users.service.entity.TemporaryCustomer;
+import com.jdm.legends.users.service.enums.Roles;
+import com.jdm.legends.users.service.mapping.Mapper;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -48,22 +51,31 @@ public class UtilsMock {
                 .deadlineCarToSell(now().plusMonths(3))
                 .build();
 
-        TemporaryUser temporaryUser = TemporaryUser.builder()
-                .fullName("John Cena")
-                .userName("cannot_see_me98")
-                .emailAddress("johnCeva12@yahoo.com")
-                .role("Potential Client")
-                .checkInformationStoredTemporarily(true)
-                .build();
+        Mapper<TemporaryCustomerDTO, TemporaryCustomer> mapper = (TemporaryCustomerDTO request) ->
+                TemporaryCustomer.builder()
+                        .fullName(request.fullName())
+                        .userName(request.userName())
+                        .emailAddress(request.emailAddress())
+                        .role(request.role())
+                        .checkInformationStoredTemporarily(request.checkInformationStoredTemporarily())
+                        .historyBidList(new ArrayList<>())
+                        .role((request.checkInformationStoredTemporarily()) ? Roles.POTENTIAL_CLIENT.getValue() : Roles.ANONYMOUS.getValue())
+                        .build();
 
         HistoryBid historyBid = HistoryBid.builder()
                 .bidValue(new BigDecimal("12354323412"))
                 .car(build)
                 .timeOfTheBid(now())
-                .temporaryUsersList(new HashSet<>(Set.of(temporaryUser)))
+                .temporaryUsersList(new HashSet<>(Set.of(mapper.map(getTempCustomerDTOMock()))))
                 .build();
 
         build.setHistoryBidList(new ArrayList<>(List.of(historyBid)));
         return build;
+    }
+
+    public static TemporaryCustomerDTO getTempCustomerDTOMock() {
+       return new TemporaryCustomerDTO("John Cena"
+                , "cannot_see_me98", "johnCeva12@yahoo.com"
+                , "Potential Client", true);
     }
 }

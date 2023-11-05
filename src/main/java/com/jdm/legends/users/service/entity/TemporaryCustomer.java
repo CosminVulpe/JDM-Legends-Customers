@@ -1,12 +1,11 @@
-package com.jdm.legends.users.service.dto;
+package com.jdm.legends.users.service.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jdm.legends.users.service.dto.HistoryBid;
 import lombok.*;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,36 +13,25 @@ import static javax.persistence.CascadeType.MERGE;
 import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.IDENTITY;
 
-@Entity(name = "TemporaryUser")
-@Table
-@Setter
-@Getter
+@Entity
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public final class TemporaryUser {
+public final class TemporaryCustomer {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
-
-    @Nullable
     private String fullName;
-
-    @Nullable
     private String userName;
-
-    @Email
     private String emailAddress;
-
-    @Nullable
     private String role;
-
     private boolean checkInformationStoredTemporarily;
 
     @ManyToMany(fetch = EAGER, cascade = MERGE)
     @JoinTable(
-            name = "temporary_user_history_bid",
-            joinColumns =  @JoinColumn(name = "temporary_user_id") ,
+            name = "temporary_customer_history_bid",
+            joinColumns =  @JoinColumn(name = "temporary_customer_id") ,
             inverseJoinColumns =  @JoinColumn(name = "history_bid_id")
     )
     @JsonIgnore

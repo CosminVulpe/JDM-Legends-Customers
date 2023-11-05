@@ -1,9 +1,9 @@
 package com.jdm.legends.users.controller;
 
+import com.jdm.legends.users.controller.dto.HistoryBidTemporaryCustomerRequest;
 import com.jdm.legends.users.repository.WinnerUser;
-import com.jdm.legends.users.service.TemporaryUserService;
-import com.jdm.legends.users.service.dto.HistoryBidTemporaryUser;
-import com.jdm.legends.users.service.dto.TemporaryUser;
+import com.jdm.legends.users.service.TemporaryCustomerService;
+import com.jdm.legends.users.service.entity.TemporaryCustomer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,15 +14,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RequestMapping(path = "/temporary-user")
 public class TemporaryUserController {
-    private final TemporaryUserService service;
+    private final TemporaryCustomerService service;
 
     @PostMapping(path = "/save")
-    public void saveTempUser(@RequestBody HistoryBidTemporaryUser historyBidTemporaryUser) {
-        service.saveUser(historyBidTemporaryUser.getTemporaryUser(), historyBidTemporaryUser.getHistoryBid());
+    public void saveTempUser(@RequestBody HistoryBidTemporaryCustomerRequest historyBidTemporaryUserRequest) {
+        service.saveUser(historyBidTemporaryUserRequest.temporaryCustomerDTO(), historyBidTemporaryUserRequest.historyBid());
     }
 
     @GetMapping()
-    public List<TemporaryUser> getAllTempUsers() {
+    public List<TemporaryCustomer> getAllTempUsers() {
         return service.getAllTempUsers();
     }
 

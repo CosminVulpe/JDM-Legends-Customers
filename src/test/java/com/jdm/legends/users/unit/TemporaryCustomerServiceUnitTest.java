@@ -1,10 +1,10 @@
 package com.jdm.legends.users.unit;
 
-import com.jdm.legends.users.repository.TemporaryUserRepository;
-import com.jdm.legends.users.service.TemporaryUserService;
+import com.jdm.legends.users.repository.TemporaryCustomerRepository;
+import com.jdm.legends.users.service.TemporaryCustomerService;
 import com.jdm.legends.users.service.dto.Car;
 import com.jdm.legends.users.service.dto.HistoryBid;
-import com.jdm.legends.users.service.dto.TemporaryUser;
+import com.jdm.legends.users.service.entity.TemporaryCustomer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,19 +25,19 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
-class TemporaryUserServiceUnitTest {
+class TemporaryCustomerServiceUnitTest {
 
     @Mock
-    private TemporaryUserRepository repository;
+    private TemporaryCustomerRepository repository;
 
     @InjectMocks
-    private TemporaryUserService temporaryUserService;
+    private TemporaryCustomerService temporaryCustomerService;
 
     @Test
     void getAllTempUsersSuccessfully() {
         when(repository.findAll()).thenReturn(getTempUsersMockData());
 
-        List<TemporaryUser> allTempUsers = temporaryUserService.getAllTempUsers();
+        List<TemporaryCustomer> allTempUsers = temporaryCustomerService.getAllTempUsers();
 
         verify(repository).findAll();
         assertThat(allTempUsers).isNotEmpty();
@@ -47,15 +47,15 @@ class TemporaryUserServiceUnitTest {
 
     @Test
     void saveTempUserSuccessfully() {
-        temporaryUserService.saveUser(getTempUsersMockData().get(0), getHistoryBidMockData());
+        temporaryCustomerService.saveUser(getTempUsersMockData().get(0), getHistoryBidMockData());
         verify(repository).save(any());
     }
 
-    private List<TemporaryUser> getTempUsersMockData() {
+    private List<TemporaryCustomer> getTempUsersMockData() {
         return List.of(
-                TemporaryUser.builder().userName("tes12").fullName("John Mick").emailAddress("john12@gmail.com").historyBidList(new ArrayList<>()).build(),
-                TemporaryUser.builder().userName("harry66").fullName("Harry Style").emailAddress("harrymusic@gmail.com").historyBidList(new ArrayList<>()).build(),
-                TemporaryUser.builder().userName("therock").fullName("The Rock").emailAddress("sevenbucksprod@gmail.com").historyBidList(new ArrayList<>()).build()
+                TemporaryCustomer.builder().userName("tes12").fullName("John Mick").emailAddress("john12@gmail.com").historyBidList(new ArrayList<>()).build(),
+                TemporaryCustomer.builder().userName("harry66").fullName("Harry Style").emailAddress("harrymusic@gmail.com").historyBidList(new ArrayList<>()).build(),
+                TemporaryCustomer.builder().userName("therock").fullName("The Rock").emailAddress("sevenbucksprod@gmail.com").historyBidList(new ArrayList<>()).build()
         );
     }
 
