@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000/", allowedHeaders = "*")
 @RequestMapping(path = "/temporary-user")
 public class TemporaryUserController {
     private final TemporaryUserService service;
