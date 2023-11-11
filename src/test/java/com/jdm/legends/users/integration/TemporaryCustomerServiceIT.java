@@ -2,8 +2,8 @@ package com.jdm.legends.users.integration;
 
 import com.jdm.legends.users.controller.dto.HistoryBidTemporaryCustomerRequest;
 import com.jdm.legends.users.repository.TemporaryCustomerRepository;
-import com.jdm.legends.users.service.dto.Car;
-import com.jdm.legends.users.service.dto.HistoryBid;
+import com.jdm.legends.users.service.entity.Car;
+import com.jdm.legends.users.service.entity.HistoryBid;
 import com.jdm.legends.users.service.entity.TemporaryCustomer;
 import com.jdm.legends.users.utils.UtilsMock;
 import org.junit.jupiter.api.Disabled;
@@ -40,7 +40,6 @@ class TemporaryCustomerServiceIT {
     void shouldSaveTempUserSuccessfully() throws Exception {
         Car car = buildCarRequest();
         HistoryBid historyBid = car.getHistoryBidList().get(0);
-        TemporaryCustomer temporaryCustomer = historyBid.getTemporaryUsersList().stream().findFirst().orElse(new TemporaryCustomer());
 
         HistoryBidTemporaryCustomerRequest request = new HistoryBidTemporaryCustomerRequest(historyBid, getTempCustomerDTOMock());
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.post("/temporary-user/save")

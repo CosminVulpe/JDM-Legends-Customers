@@ -2,9 +2,9 @@ package com.jdm.legends.users.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.jdm.legends.users.controller.dto.TemporaryCustomerDTO;
-import com.jdm.legends.users.service.dto.Car;
-import com.jdm.legends.users.service.dto.HistoryBid;
+import com.jdm.legends.users.controller.dto.TemporaryCustomerRequest;
+import com.jdm.legends.users.service.entity.Car;
+import com.jdm.legends.users.service.entity.HistoryBid;
 import com.jdm.legends.users.service.entity.TemporaryCustomer;
 import com.jdm.legends.users.service.enums.Roles;
 import com.jdm.legends.users.service.mapping.Mapper;
@@ -51,7 +51,7 @@ public class UtilsMock {
                 .deadlineCarToSell(now().plusMonths(3))
                 .build();
 
-        Mapper<TemporaryCustomerDTO, TemporaryCustomer> mapper = (TemporaryCustomerDTO request) ->
+        Mapper<TemporaryCustomerRequest, TemporaryCustomer> mapper = (TemporaryCustomerRequest request) ->
                 TemporaryCustomer.builder()
                         .fullName(request.fullName())
                         .userName(request.userName())
@@ -73,8 +73,8 @@ public class UtilsMock {
         return build;
     }
 
-    public static TemporaryCustomerDTO getTempCustomerDTOMock() {
-       return new TemporaryCustomerDTO("John Cena"
+    public static TemporaryCustomerRequest getTempCustomerDTOMock() {
+       return new TemporaryCustomerRequest("John Cena"
                 , "cannot_see_me98", "johnCeva12@yahoo.com"
                 , "Potential Client", true);
     }
