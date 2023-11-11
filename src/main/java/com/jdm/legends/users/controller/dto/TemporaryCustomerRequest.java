@@ -4,7 +4,7 @@ import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.Email;
 
-public record TemporaryCustomerDTO(
+public record TemporaryCustomerRequest(
 
         @Nullable
         String fullName,

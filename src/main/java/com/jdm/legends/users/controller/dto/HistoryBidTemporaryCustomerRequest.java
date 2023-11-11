@@ -6,6 +6,6 @@ import com.jdm.legends.users.service.dto.HistoryBid;
 
 public record HistoryBidTemporaryCustomerRequest(
         HistoryBid historyBid,
-        TemporaryCustomerDTO temporaryCustomerDTO
+        TemporaryCustomerRequest temporaryCustomerRequest
 ) {
 }

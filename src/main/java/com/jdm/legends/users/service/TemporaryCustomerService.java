@@ -1,6 +1,6 @@
 package com.jdm.legends.users.service;
 
-import com.jdm.legends.users.controller.dto.TemporaryCustomerDTO;
+import com.jdm.legends.users.controller.dto.TemporaryCustomerRequest;
 import com.jdm.legends.users.repository.TemporaryCustomerRepository;
 import com.jdm.legends.users.repository.WinnerUser;
 import com.jdm.legends.users.service.dto.HistoryBid;
@@ -26,8 +26,8 @@ public class TemporaryCustomerService {
         return repository.findAll();
     }
 
-    public void saveUser(@Valid TemporaryCustomerDTO temporaryCustomerDTO, HistoryBid historyBid) {
-        Mapper<TemporaryCustomerDTO, TemporaryCustomer> mapper = (TemporaryCustomerDTO request) ->
+    public void saveUser(@Valid TemporaryCustomerRequest temporaryCustomerRequest, HistoryBid historyBid) {
+        Mapper<TemporaryCustomerRequest, TemporaryCustomer> mapper = (TemporaryCustomerRequest request) ->
                 TemporaryCustomer.builder()
                         .fullName(request.fullName())
                         .userName(request.userName())
@@ -37,7 +37,7 @@ public class TemporaryCustomerService {
                         .historyBidList(new ArrayList<>())
                         .role( (request.checkInformationStoredTemporarily()) ? Roles.POTENTIAL_CLIENT.getValue() : Roles.ANONYMOUS.getValue())
                         .build();
-        TemporaryCustomer temporaryCustomer = mapper.map(temporaryCustomerDTO);
+        TemporaryCustomer temporaryCustomer = mapper.map(temporaryCustomerRequest);
         temporaryCustomer.addHistoryBid(historyBid);
 
         repository.save(temporaryCustomer);

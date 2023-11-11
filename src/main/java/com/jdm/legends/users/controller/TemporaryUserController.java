@@ -18,7 +18,7 @@ public class TemporaryUserController {
 
     @PostMapping(path = "/save")
     public void saveTempUser(@RequestBody HistoryBidTemporaryCustomerRequest historyBidTemporaryUserRequest) {
-        service.saveUser(historyBidTemporaryUserRequest.temporaryCustomerDTO(), historyBidTemporaryUserRequest.historyBid());
+        service.saveUser(historyBidTemporaryUserRequest.temporaryCustomerRequest(), historyBidTemporaryUserRequest.historyBid());
     }
 
     @GetMapping()
