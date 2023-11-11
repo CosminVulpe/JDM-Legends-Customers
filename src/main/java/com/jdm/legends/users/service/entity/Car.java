@@ -1,4 +1,4 @@
-package com.jdm.legends.users.service.dto;
+package com.jdm.legends.users.service.entity;
 
 import com.jdm.legends.users.service.enums.CarColor;
 import com.jdm.legends.users.service.enums.CarCompany;
@@ -16,8 +16,8 @@ import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.IDENTITY;
 
 
-@Entity(name = "cars")
-@Table
+@Entity
+@Table(name = "Cars")
 @Getter
 @Setter
 @Builder
@@ -46,7 +46,7 @@ public final class Car {
 
     private int productionYear;
 
-    private Integer initialPrice;
+    private int initialPrice;
 
     private int hp;
 

@@ -1,6 +1,7 @@
-package com.jdm.legends.users.service.dto;
+package com.jdm.legends.users.service.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jdm.legends.users.service.entity.Car;
 import com.jdm.legends.users.service.entity.TemporaryCustomer;
 import lombok.*;
 
@@ -15,10 +16,8 @@ import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 
-@Entity(name = "HistoryBid")
-@Table
-@Getter
-@Setter
+@Entity
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
