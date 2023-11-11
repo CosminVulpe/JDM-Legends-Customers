@@ -1,18 +1,18 @@
 package com.jdm.legends.users.service.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.CascadeType.MERGE;
-import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
+@Table(name = "temporary_customers")
 @Data
 @Builder
 @AllArgsConstructor
@@ -27,17 +27,8 @@ public final class TemporaryCustomer {
     private String role;
     private boolean checkInformationStoredTemporarily;
 
-    @ManyToMany(fetch = EAGER, cascade = MERGE)
-    @JoinTable(
-            name = "temporary_customer_history_bid",
-            joinColumns =  @JoinColumn(name = "temporary_customer_id") ,
-            inverseJoinColumns =  @JoinColumn(name = "history_bid_id")
-    )
-    @JsonIgnore
-    private List<HistoryBid> historyBidList = new ArrayList<>();
-
-    public void addHistoryBid(HistoryBid historyBid) {
-        historyBidList.add(historyBid);
-        historyBid.getTemporaryUsersList().add(this);
-    }
+    @ElementCollection
+    @CollectionTable(name = "temporary_customer_history_bids", joinColumns = @JoinColumn(name = "temporary_customer_id"))
+    @Column(name = "history_bid")
+    private List<Long> historyBidIds;
 }
