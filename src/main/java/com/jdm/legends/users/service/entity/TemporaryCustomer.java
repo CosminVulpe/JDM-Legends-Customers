@@ -6,8 +6,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -26,9 +28,5 @@ public final class TemporaryCustomer {
     private String emailAddress;
     private String role;
     private boolean checkInformationStoredTemporarily;
-
-    @ElementCollection
-    @CollectionTable(name = "temporary_customer_history_bids", joinColumns = @JoinColumn(name = "temporary_customer_id"))
-    @Column(name = "history_bid")
-    private List<Long> historyBidIds;
+    private Long historyBidId;
 }

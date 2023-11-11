@@ -1,9 +1,9 @@
 package com.jdm.legends.users.service;
 
 import com.jdm.legends.users.controller.dto.TemporaryCustomerRequest;
+import com.jdm.legends.users.controller.dto.TemporaryCustomerResponse;
 import com.jdm.legends.users.repository.TemporaryCustomerRepository;
 import com.jdm.legends.users.repository.WinnerUser;
-import com.jdm.legends.users.service.entity.HistoryBid;
 import com.jdm.legends.users.service.entity.TemporaryCustomer;
 import com.jdm.legends.users.service.enums.Roles;
 import com.jdm.legends.users.service.mapping.Mapper;
@@ -25,23 +25,20 @@ public class TemporaryCustomerService {
         return repository.findAll();
     }
 
-    //TODO This logic should be re-think
-    public void saveUser(TemporaryCustomerRequest temporaryCustomerRequest, HistoryBid historyBidRequest) {
-        Mapper<TemporaryCustomerRequest, TemporaryCustomer> mapperCustomer = (TemporaryCustomerRequest request) ->
+    public TemporaryCustomerResponse saveUser(TemporaryCustomerRequest request, Long historyBidId) {
+        Mapper<TemporaryCustomerRequest, TemporaryCustomer> mapperCustomer = (TemporaryCustomerRequest source) ->
                 TemporaryCustomer.builder()
-                        .fullName(request.fullName())
-                        .userName(request.userName())
-                        .emailAddress(request.emailAddress())
-                        .role(request.role())
-                        .checkInformationStoredTemporarily(request.checkInformationStoredTemporarily())
-                        .historyBidList(new ArrayList<>())
-                        .role( (request.checkInformationStoredTemporarily()) ? Roles.POTENTIAL_CLIENT.getValue() : Roles.ANONYMOUS.getValue())
+                        .fullName(source.fullName())
+                        .userName(source.userName())
+                        .emailAddress(source.emailAddress())
+                        .role(source.role())
+                        .checkInformationStoredTemporarily(source.checkInformationStoredTemporarily())
+                        .role( (source.checkInformationStoredTemporarily()) ? Roles.POTENTIAL_CLIENT.getValue() : Roles.ANONYMOUS.getValue())
+                        .historyBidId(historyBidId)
                         .build();
-        TemporaryCustomer temporaryCustomer = mapperCustomer.map(temporaryCustomerRequest);
-        temporaryCustomer.addHistoryBid(historyBidRequest);
-
-        repository.save(temporaryCustomer);
-        log.info("Successfully saved temporary customer");
+        TemporaryCustomer temporaryCustomer = mapperCustomer.map(request);
+        TemporaryCustomer temporaryCustomerSaved = repository.save(temporaryCustomer);
+        return new TemporaryCustomerResponse(temporaryCustomerSaved.getId());
     }
 
     public Optional<WinnerUser> getWinnerUser(Long carId) {

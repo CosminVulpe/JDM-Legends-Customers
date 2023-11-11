@@ -1,6 +1,7 @@
 package com.jdm.legends.users.controller;
 
-import com.jdm.legends.users.controller.dto.HistoryBidTemporaryCustomerRequest;
+import com.jdm.legends.users.controller.dto.TemporaryCustomerRequest;
+import com.jdm.legends.users.controller.dto.TemporaryCustomerResponse;
 import com.jdm.legends.users.repository.WinnerUser;
 import com.jdm.legends.users.service.TemporaryCustomerService;
 import com.jdm.legends.users.service.entity.TemporaryCustomer;
@@ -12,13 +13,13 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/temporary-user")
+@RequestMapping(path = "/temporary-customer")
 public class TemporaryUserController {
     private final TemporaryCustomerService service;
 
-    @PostMapping(path = "/save")
-    public void saveTempUser(@RequestBody HistoryBidTemporaryCustomerRequest historyBidTemporaryUserRequest) {
-        service.saveUser(historyBidTemporaryUserRequest.temporaryCustomerRequest(), historyBidTemporaryUserRequest.historyBid());
+    @PostMapping(path = "/save/{historyBidId}")
+    public TemporaryCustomerResponse saveTempUser(@RequestBody TemporaryCustomerRequest request, @PathVariable Long historyBidId){
+       return service.saveUser(request ,historyBidId);
     }
 
     @GetMapping()
