@@ -3,14 +3,14 @@ package com.jdm.legends.users.controller;
 import com.jdm.legends.users.controller.dto.TemporaryCustomerDTO;
 import com.jdm.legends.users.controller.dto.TemporaryCustomerRequest;
 import com.jdm.legends.users.controller.dto.TemporaryCustomerIdResponse;
-import com.jdm.legends.users.repository.WinnerUser;
+import com.jdm.legends.users.controller.dto.WinnerCustomerResponse;
 import com.jdm.legends.users.service.TemporaryCustomerService;
 import com.jdm.legends.users.service.entity.TemporaryCustomer;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,12 +20,12 @@ public class TemporaryUserController {
 
     @PostMapping(path = "/save/{historyBidId}")
     public TemporaryCustomerIdResponse saveTempUser(@RequestBody TemporaryCustomerRequest request, @PathVariable Long historyBidId){
-       return service.saveUser(request ,historyBidId);
+       return service.saveTempCustomer(request ,historyBidId);
     }
 
     @GetMapping()
     public List<TemporaryCustomer> getAllTempUsers() {
-        return service.getAllTempUsers();
+        return service.getAllTempCustomers();
     }
 
     @GetMapping(path = "/{temporaryCustomerId}")
@@ -34,7 +34,7 @@ public class TemporaryUserController {
     }
 
     @GetMapping(path = "/winner/{carId}")
-    public Optional<WinnerUser> getWinner(@PathVariable Long carId){
+    public ResponseEntity<WinnerCustomerResponse> getWinner(@PathVariable Long carId){
         return service.getWinnerUser(carId);
     }
 }
