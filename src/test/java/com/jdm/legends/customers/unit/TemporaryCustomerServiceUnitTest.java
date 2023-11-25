@@ -1,4 +1,4 @@
-package com.jdm.legends.customers.unit.repository;
+package com.jdm.legends.customers.unit;
 
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerDTO;
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerIdResponse;
