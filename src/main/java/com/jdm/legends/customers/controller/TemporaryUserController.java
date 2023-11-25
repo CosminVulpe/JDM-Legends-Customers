@@ -19,12 +19,12 @@ public class TemporaryUserController {
     private final TemporaryCustomerService service;
 
     @PostMapping(path = "/save/{historyBidId}")
-    public TemporaryCustomerIdResponse saveTempUser(@RequestBody TemporaryCustomerRequest request, @PathVariable Long historyBidId){
+    public TemporaryCustomerIdResponse saveTempCustomer(@RequestBody TemporaryCustomerRequest request, @PathVariable Long historyBidId){
        return service.saveTempCustomer(request ,historyBidId);
     }
 
     @GetMapping()
-    public List<TemporaryCustomer> getAllTempUsers() {
+    public List<TemporaryCustomer> getAllTempCustomer() {
         return service.getAllTempCustomers();
     }
 
