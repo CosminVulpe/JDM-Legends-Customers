@@ -1,4 +1,4 @@
-package com.jdm.legends.customers.unit;
+package com.jdm.legends.customers.unit.repository;
 
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerDTO;
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerIdResponse;
@@ -16,10 +16,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 
+import static com.jdm.legends.customers.utils.TestDummy.FULL_NAME;
+import static com.jdm.legends.customers.utils.TestDummy.MAIL;
+import static com.jdm.legends.customers.utils.TestDummy.USERNAME;
+import static com.jdm.legends.customers.utils.TestDummy.getTempCustomerMock;
+import static com.jdm.legends.customers.utils.TestDummy.getTemporaryCustomerRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -32,9 +36,6 @@ class TemporaryCustomerServiceUnitTest {
     @InjectMocks
     private TemporaryCustomerService temporaryCustomerService;
 
-    private static final String FULL_NAME = "John Cena";
-    private static final String USERNAME = "cannotseeme";
-    private static final String MAIL = "JohnCeva@yahoo.com";
 
     @Test
     void getAllTempUsersSuccessfully() {
@@ -65,24 +66,13 @@ class TemporaryCustomerServiceUnitTest {
 
     @Test
     void saveTempUser() {
-        TemporaryCustomerRequest request = new TemporaryCustomerRequest(FULL_NAME, USERNAME, MAIL, "Potential Client", true);
+        TemporaryCustomerRequest request = getTemporaryCustomerRequest();
         when(repository.save(any())).thenReturn(getTempCustomerMock());
 
         TemporaryCustomerIdResponse temporaryCustomerIdResponse = temporaryCustomerService.saveTempCustomer(request, 1L);
         verify(repository).save(any());
         assertThat(temporaryCustomerIdResponse).isNotNull();
         assertThat(temporaryCustomerIdResponse.id()).isNotNull();
-    }
-
-    private static TemporaryCustomer getTempCustomerMock() {
-        return TemporaryCustomer.builder()
-                .emailAddress(MAIL)
-                .id(1L)
-                .fullName(FULL_NAME)
-                .userName(USERNAME)
-                .role("anonymous".toUpperCase())
-                .checkInformationStoredTemporarily(true)
-                .build();
     }
 
 }
