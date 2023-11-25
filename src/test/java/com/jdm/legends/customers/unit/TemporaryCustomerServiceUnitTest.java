@@ -1,0 +1,88 @@
+package com.jdm.legends.customers.unit;
+
+import com.jdm.legends.customers.controller.dto.TemporaryCustomerDTO;
+import com.jdm.legends.customers.controller.dto.TemporaryCustomerIdResponse;
+import com.jdm.legends.customers.controller.dto.TemporaryCustomerRequest;
+import com.jdm.legends.customers.repository.TemporaryCustomerRepository;
+import com.jdm.legends.customers.service.TemporaryCustomerService;
+import com.jdm.legends.customers.service.TemporaryCustomerService.TemporaryCustomerByIdException;
+import com.jdm.legends.customers.service.entity.TemporaryCustomer;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+
+@ExtendWith(MockitoExtension.class)
+class TemporaryCustomerServiceUnitTest {
+    @Mock
+    private TemporaryCustomerRepository repository;
+
+    @InjectMocks
+    private TemporaryCustomerService temporaryCustomerService;
+
+    private static final String FULL_NAME = "John Cena";
+    private static final String USERNAME = "cannotseeme";
+    private static final String MAIL = "JohnCeva@yahoo.com";
+
+    @Test
+    void getAllTempUsersSuccessfully() {
+        when(repository.findAll()).thenReturn(List.of(TemporaryCustomer.builder().build()));
+
+        List<TemporaryCustomer> allTempCustomers = temporaryCustomerService.getAllTempCustomers();
+        assertThat(allTempCustomers).hasSizeGreaterThan(0);
+    }
+
+    @Test
+    void getTempCustomerById() {
+        when(repository.findById(any())).thenReturn(Optional.of(getTempCustomerMock()));
+        TemporaryCustomerDTO tempCustomerById = temporaryCustomerService.getTempCustomerById(1L);
+
+        assertThat(tempCustomerById.fullName()).isEqualTo(FULL_NAME);
+        assertThat(tempCustomerById.userName()).isEqualTo(USERNAME);
+        assertThat(tempCustomerById.emailAddress()).isEqualTo(MAIL);
+    }
+
+
+    @Test
+    void getTempCustomerByIdThrowsException() {
+        when(repository.findById(any())).thenReturn(Optional.empty());
+        assertThatThrownBy(() -> temporaryCustomerService.getTempCustomerById(1L))
+                .isInstanceOf(TemporaryCustomerByIdException.class)
+                .hasMessage("Temporary Customer with specific id cannot be found");
+    }
+
+    @Test
+    void saveTempUser() {
+        TemporaryCustomerRequest request = new TemporaryCustomerRequest(FULL_NAME, USERNAME, MAIL, "Potential Client", true);
+        when(repository.save(any())).thenReturn(getTempCustomerMock());
+
+        TemporaryCustomerIdResponse temporaryCustomerIdResponse = temporaryCustomerService.saveTempCustomer(request, 1L);
+        verify(repository).save(any());
+        assertThat(temporaryCustomerIdResponse).isNotNull();
+        assertThat(temporaryCustomerIdResponse.id()).isNotNull();
+    }
+
+    private static TemporaryCustomer getTempCustomerMock() {
+        return TemporaryCustomer.builder()
+                .emailAddress(MAIL)
+                .id(1L)
+                .fullName(FULL_NAME)
+                .userName(USERNAME)
+                .role("anonymous".toUpperCase())
+                .checkInformationStoredTemporarily(true)
+                .build();
+    }
+
+}
