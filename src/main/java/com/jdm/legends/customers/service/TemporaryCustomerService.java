@@ -79,29 +79,4 @@ public class TemporaryCustomerService {
             log.warn(message);
         }
     }
-
-    public static class LambdaThreadDemo {
-
-        public static void main(String[] args) {
-            System.out.println(Arrays.toString(calculate(new int[]{23, 2, 3, 4, 5})));
-        }
-
-        public static int[] calculate(int[] array) {
-            Map<Integer, Integer> cont = new HashMap<>();
-
-            List<Integer> list = IntStream.range(0, array.length).map(index -> {
-                int res = array[index] * (index + 1);
-                cont.put(array[index], res);
-                return res;
-            }).sorted().boxed().toList();
-
-            int[] res = new int[list.size()];
-            cont.forEach((k,v) -> {
-                int i = list.indexOf(v);
-                res[i] = k;
-            });
-            return res;
-        }
-    }
-
 }

@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/temporary-customer")
-public class TemporaryUserController {
+public class TemporaryCustomerController {
     private final TemporaryCustomerService service;
 
     @PostMapping(path = "/save/{historyBidId}")
@@ -29,7 +29,7 @@ public class TemporaryUserController {
     }
 
     @GetMapping(path = "/{temporaryCustomerId}")
-    public TemporaryCustomerDTO getCarById(@PathVariable("temporaryCustomerId") Long temporaryCustomerId) {
+    public TemporaryCustomerDTO getTempCustomerById(@PathVariable("temporaryCustomerId") Long temporaryCustomerId) {
         return service.getTempCustomerById(temporaryCustomerId);
     }
 

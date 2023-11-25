@@ -39,13 +39,14 @@ public class TemporaryCustomerRepo {
             log.error(msgError);
             throw new TemporaryCustomerService.WinnerCustomerException(msgError);
         }
-        WinnerCustomerResponse body = restTemplateForEntity.getBody();
-        if (isNull(body)) {
+
+        WinnerCustomerResponse response = restTemplateForEntity.getBody();
+        if (isNull(response)) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
 
-        TemporaryCustomer tempCustomer = repository.findAll().stream().filter(temporaryCustomer -> temporaryCustomer.getHistoryBidId().equals(body.historyBidId())).findFirst().orElseThrow();
-        WinnerCustomerResponse winnerCustomerResponse = new WinnerCustomerResponse(body.bidValue(), body.historyBidId(), tempCustomer.getUserName(), tempCustomer.getEmailAddress());
+        TemporaryCustomer tempCustomer = repository.findAll().stream().filter(temporaryCustomer -> temporaryCustomer.getHistoryBidId().equals(response.historyBidId())).findFirst().orElseThrow();
+        WinnerCustomerResponse winnerCustomerResponse = new WinnerCustomerResponse(response.bidValue(), response.historyBidId(), tempCustomer.getUserName(), tempCustomer.getEmailAddress());
         return ResponseEntity.ok(winnerCustomerResponse);
     }
 
