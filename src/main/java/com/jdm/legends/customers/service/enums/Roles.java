@@ -1,4 +1,4 @@
-package com.jdm.legends.users.service.enums;
+package com.jdm.legends.customers.service.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

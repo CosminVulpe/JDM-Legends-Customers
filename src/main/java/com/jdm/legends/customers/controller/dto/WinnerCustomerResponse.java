@@ -1,4 +1,4 @@
-package com.jdm.legends.users.controller.dto;
+package com.jdm.legends.customers.controller.dto;
 
 import java.math.BigDecimal;
 

@@ -1,21 +1,22 @@
-package com.jdm.legends.users.service;
+package com.jdm.legends.customers.service;
 
-import com.jdm.legends.users.controller.dto.TemporaryCustomerDTO;
-import com.jdm.legends.users.controller.dto.TemporaryCustomerIdResponse;
-import com.jdm.legends.users.controller.dto.TemporaryCustomerRequest;
-import com.jdm.legends.users.controller.dto.WinnerCustomerResponse;
-import com.jdm.legends.users.repository.TemporaryCustomerRepository;
-import com.jdm.legends.users.service.entity.TemporaryCustomer;
-import com.jdm.legends.users.service.enums.Roles;
-import com.jdm.legends.users.service.mapping.Mapper;
-import com.jdm.legends.users.service.repository.TemporaryCustomerRepo;
+import com.jdm.legends.customers.controller.dto.TemporaryCustomerDTO;
+import com.jdm.legends.customers.controller.dto.TemporaryCustomerIdResponse;
+import com.jdm.legends.customers.controller.dto.TemporaryCustomerRequest;
+import com.jdm.legends.customers.controller.dto.WinnerCustomerResponse;
+import com.jdm.legends.customers.repository.TemporaryCustomerRepository;
+import com.jdm.legends.customers.service.entity.TemporaryCustomer;
+import com.jdm.legends.customers.service.enums.Roles;
+import com.jdm.legends.customers.service.mapping.Mapper;
+import com.jdm.legends.customers.service.repository.TemporaryCustomerRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.IntStream;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -76,6 +77,30 @@ public class TemporaryCustomerService {
         public WinnerCustomerException(String message) {
             super(message);
             log.warn(message);
+        }
+    }
+
+    public static class LambdaThreadDemo {
+
+        public static void main(String[] args) {
+            System.out.println(Arrays.toString(calculate(new int[]{23, 2, 3, 4, 5})));
+        }
+
+        public static int[] calculate(int[] array) {
+            Map<Integer, Integer> cont = new HashMap<>();
+
+            List<Integer> list = IntStream.range(0, array.length).map(index -> {
+                int res = array[index] * (index + 1);
+                cont.put(array[index], res);
+                return res;
+            }).sorted().boxed().toList();
+
+            int[] res = new int[list.size()];
+            cont.forEach((k,v) -> {
+                int i = list.indexOf(v);
+                res[i] = k;
+            });
+            return res;
         }
     }
 

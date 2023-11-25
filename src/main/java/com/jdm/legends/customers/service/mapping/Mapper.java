@@ -1,4 +1,4 @@
-package com.jdm.legends.users.service.mapping;
+package com.jdm.legends.customers.service.mapping;
 
 @FunctionalInterface
 public interface Mapper<T1, T2>  {

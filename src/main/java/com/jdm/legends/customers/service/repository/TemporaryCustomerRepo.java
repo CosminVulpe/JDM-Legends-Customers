@@ -1,9 +1,9 @@
-package com.jdm.legends.users.service.repository;
+package com.jdm.legends.customers.service.repository;
 
-import com.jdm.legends.users.controller.dto.WinnerCustomerResponse;
-import com.jdm.legends.users.repository.TemporaryCustomerRepository;
-import com.jdm.legends.users.service.TemporaryCustomerService;
-import com.jdm.legends.users.service.entity.TemporaryCustomer;
+import com.jdm.legends.customers.controller.dto.WinnerCustomerResponse;
+import com.jdm.legends.customers.repository.TemporaryCustomerRepository;
+import com.jdm.legends.customers.service.TemporaryCustomerService;
+import com.jdm.legends.customers.service.entity.TemporaryCustomer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;

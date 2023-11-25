@@ -1,4 +1,4 @@
-package com.jdm.legends.users.service.entity;
+package com.jdm.legends.customers.service.entity;
 
 
 import lombok.AllArgsConstructor;
@@ -19,7 +19,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public final class TemporaryCustomer {
+public class TemporaryCustomer {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;

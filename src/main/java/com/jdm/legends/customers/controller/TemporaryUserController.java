@@ -1,11 +1,11 @@
-package com.jdm.legends.users.controller;
+package com.jdm.legends.customers.controller;
 
-import com.jdm.legends.users.controller.dto.TemporaryCustomerDTO;
-import com.jdm.legends.users.controller.dto.TemporaryCustomerRequest;
-import com.jdm.legends.users.controller.dto.TemporaryCustomerIdResponse;
-import com.jdm.legends.users.controller.dto.WinnerCustomerResponse;
-import com.jdm.legends.users.service.TemporaryCustomerService;
-import com.jdm.legends.users.service.entity.TemporaryCustomer;
+import com.jdm.legends.customers.controller.dto.TemporaryCustomerDTO;
+import com.jdm.legends.customers.controller.dto.TemporaryCustomerRequest;
+import com.jdm.legends.customers.controller.dto.TemporaryCustomerIdResponse;
+import com.jdm.legends.customers.controller.dto.WinnerCustomerResponse;
+import com.jdm.legends.customers.service.TemporaryCustomerService;
+import com.jdm.legends.customers.service.entity.TemporaryCustomer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

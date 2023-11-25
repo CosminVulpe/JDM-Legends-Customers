@@ -1,4 +1,4 @@
-package com.jdm.legends.users;
+package com.jdm.legends.customers;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
