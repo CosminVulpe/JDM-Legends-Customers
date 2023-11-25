@@ -2,7 +2,7 @@ package com.jdm.legends.customers.service.repository;
 
 import com.jdm.legends.customers.controller.dto.WinnerCustomerResponse;
 import com.jdm.legends.customers.repository.TemporaryCustomerRepository;
-import com.jdm.legends.customers.service.TemporaryCustomerService;
+import com.jdm.legends.customers.service.TemporaryCustomerService.WinnerCustomerException;
 import com.jdm.legends.customers.service.entity.TemporaryCustomer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,7 +37,7 @@ public class TemporaryCustomerRepo {
         if (!restTemplateForEntity.getStatusCode().is2xxSuccessful()) {
             String msgError = "Unable to get winner max bid value";
             log.error(msgError);
-            throw new TemporaryCustomerService.WinnerCustomerException(msgError);
+            throw new WinnerCustomerException(msgError);
         }
 
         WinnerCustomerResponse response = restTemplateForEntity.getBody();
