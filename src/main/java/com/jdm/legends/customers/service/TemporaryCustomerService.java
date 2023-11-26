@@ -6,8 +6,7 @@ import com.jdm.legends.customers.controller.dto.TemporaryCustomerRequest;
 import com.jdm.legends.customers.controller.dto.WinnerCustomerResponse;
 import com.jdm.legends.customers.repository.TemporaryCustomerRepository;
 import com.jdm.legends.customers.service.entity.TemporaryCustomer;
-import com.jdm.legends.customers.service.enums.Roles;
-import com.jdm.legends.customers.service.mapping.Mapper;
+import com.jdm.legends.customers.service.mapping.TemporaryCustomerMapper;
 import com.jdm.legends.customers.service.repository.TemporaryCustomerRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,32 +26,19 @@ public class TemporaryCustomerService {
     private final TemporaryCustomerRepository repository;
     private final TemporaryCustomerRepo temporaryCustomerRepo;
 
-    public List<TemporaryCustomer> getAllTempCustomers() {
-        return repository.findAll();
+    public List<TemporaryCustomerDTO> getAllTempCustomers() {
+        return repository.findAll().stream().map(TemporaryCustomerMapper.INSTANCE::tempCustomerToTempCustomerDTO).toList();
     }
 
     public TemporaryCustomerDTO getTempCustomerById(Long id) {
         TemporaryCustomer temporaryCustomer = repository.findById(id).orElseThrow(() -> new TemporaryCustomerByIdException("Temporary Customer with specific id cannot be found"));
-        Mapper<TemporaryCustomer, TemporaryCustomerDTO> mapper = (TemporaryCustomer source) -> new TemporaryCustomerDTO(
-                source.getId(), source.getFullName(),
-                source.getUserName(), source.getEmailAddress(),
-                source.getRole(), source.isCheckInformationStoredTemporarily());
-
-        return mapper.map(temporaryCustomer);
+        return TemporaryCustomerMapper.INSTANCE.tempCustomerToTempCustomerDTO(temporaryCustomer);
     }
 
     public TemporaryCustomerIdResponse saveTempCustomer(TemporaryCustomerRequest request, Long historyBidId) {
-        Mapper<TemporaryCustomerRequest, TemporaryCustomer> mapperCustomer = (TemporaryCustomerRequest source) ->
-                TemporaryCustomer.builder()
-                        .fullName(source.fullName())
-                        .userName(source.userName())
-                        .emailAddress(source.emailAddress())
-                        .role(source.role())
-                        .checkInformationStoredTemporarily(source.checkInformationStoredTemporarily())
-                        .role((source.checkInformationStoredTemporarily()) ? Roles.POTENTIAL_CLIENT.getValue() : Roles.ANONYMOUS.getValue())
-                        .historyBidId(historyBidId)
-                        .build();
-        TemporaryCustomer temporaryCustomer = mapperCustomer.map(request);
+        TemporaryCustomer temporaryCustomer = TemporaryCustomerMapper.INSTANCE.tempCustomerRequestToTempCustomerEntity(request);
+        temporaryCustomer.setHistoryBidId(historyBidId);
+
         TemporaryCustomer temporaryCustomerSaved = repository.save(temporaryCustomer);
         return new TemporaryCustomerIdResponse(temporaryCustomerSaved.getId());
     }

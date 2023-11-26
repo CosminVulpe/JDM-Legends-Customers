@@ -23,8 +23,8 @@ public class TemporaryCustomerController {
        return service.saveTempCustomer(request ,historyBidId);
     }
 
-    @GetMapping()
-    public List<TemporaryCustomer> getAllTempCustomer() {
+    @GetMapping
+    public List<TemporaryCustomerDTO> getAllTempCustomer() {
         return service.getAllTempCustomers();
     }
 
