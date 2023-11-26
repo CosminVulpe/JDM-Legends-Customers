@@ -35,7 +35,7 @@ class TemporaryCustomerServiceIT {
 
     @Test
     void getAllTempCustomersSuccessfully() {
-        List<TemporaryCustomer> allTempCustomers = service.getAllTempCustomers();
+        List<TemporaryCustomerDTO> allTempCustomers = service.getAllTempCustomers();
         assertThat(allTempCustomers).isNotEmpty();
         allTempCustomers.forEach(temporaryCustomer -> assertThat(temporaryCustomer).isNotNull());
     }

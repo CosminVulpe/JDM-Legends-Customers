@@ -41,7 +41,7 @@ class TemporaryCustomerServiceUnitTest {
     void getAllTempUsersSuccessfully() {
         when(repository.findAll()).thenReturn(List.of(TemporaryCustomer.builder().build()));
 
-        List<TemporaryCustomer> allTempCustomers = temporaryCustomerService.getAllTempCustomers();
+        List<TemporaryCustomerDTO> allTempCustomers = temporaryCustomerService.getAllTempCustomers();
         assertThat(allTempCustomers).hasSizeGreaterThan(0);
     }
 

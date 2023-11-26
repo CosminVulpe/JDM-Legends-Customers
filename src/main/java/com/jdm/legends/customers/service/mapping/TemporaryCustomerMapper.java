@@ -17,7 +17,6 @@ public interface TemporaryCustomerMapper {
     @Mapping(target = "role", expression = "java(mapRole(request))")
     TemporaryCustomer tempCustomerRequestToTempCustomerEntity(TemporaryCustomerRequest request);
 
-    @Mapping(target = "historyBidId", ignore = true)
     TemporaryCustomerDTO tempCustomerToTempCustomerDTO(TemporaryCustomer temporaryCustomer);
 
 
