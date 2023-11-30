@@ -52,7 +52,7 @@ public class TemporaryCustomerService {
     public static final class TemporaryCustomerByIdException extends RuntimeException {
         public TemporaryCustomerByIdException(String message) {
             super(message);
-            log.warn(message);
+            log.error(message);
         }
     }
 
@@ -61,7 +61,7 @@ public class TemporaryCustomerService {
     public static final class WinnerCustomerException extends RuntimeException {
         public WinnerCustomerException(String message) {
             super(message);
-            log.warn(message);
+            log.error(message);
         }
     }
 }
