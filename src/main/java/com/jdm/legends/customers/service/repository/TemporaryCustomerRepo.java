@@ -6,7 +6,6 @@ import com.jdm.legends.customers.service.TemporaryCustomerService.WinnerCustomer
 import com.jdm.legends.customers.service.entity.TemporaryCustomer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -14,6 +13,8 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import static java.util.Objects.isNull;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.HttpStatus.OK;
 
 @Service
 @Slf4j
@@ -41,12 +42,14 @@ public class TemporaryCustomerRepo {
         }
 
         WinnerCustomerResponse response = restTemplateForEntity.getBody();
+        log.info("Get response {} from dealership-cars on route {}", response, uriComponents);
         if (isNull(response)) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            return ResponseEntity.status(NO_CONTENT).build();
         }
 
         TemporaryCustomer tempCustomer = repository.findAll().stream().filter(temporaryCustomer -> temporaryCustomer.getHistoryBidId().equals(response.historyBidId())).findFirst().orElseThrow();
         WinnerCustomerResponse winnerCustomerResponse = new WinnerCustomerResponse(response.bidValue(), response.historyBidId(), tempCustomer.getUserName(), tempCustomer.getEmailAddress());
+        log.info("Selecting the winner with status {} ", OK.value());
         return ResponseEntity.ok(winnerCustomerResponse);
     }
 
