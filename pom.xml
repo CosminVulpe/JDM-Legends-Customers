@@ -18,14 +18,6 @@
     </properties>
 
     <dependencies>
-
-        <dependency>
-            <!-- JDBC driver proxy intercepting all SQL calls, see spy.properties too-->
-            <groupId>p6spy</groupId>
-            <artifactId>p6spy</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.mapstruct/mapstruct -->
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -40,6 +32,12 @@
             <version>1.5.3.Final</version>
         </dependency>
 
+        <dependency>
+            <!-- JDBC driver proxy intercepting all SQL calls, see spy.properties too-->
+            <groupId>p6spy</groupId>
+            <artifactId>p6spy</artifactId>
+            <version>3.0.0</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -80,11 +78,18 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.22</version>
+            <version>1.18.24</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok-mapstruct-binding</artifactId>
+            <version>0.2.0</version>
         </dependency>
 
         <dependency>
@@ -93,6 +98,7 @@
             <version>2.1.212</version>
             <scope>runtime</scope>
         </dependency>
+
     </dependencies>
 
     <build>
