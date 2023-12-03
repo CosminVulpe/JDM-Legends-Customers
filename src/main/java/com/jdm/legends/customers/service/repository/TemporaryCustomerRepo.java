@@ -2,12 +2,12 @@ package com.jdm.legends.customers.service.repository;
 
 import com.jdm.legends.customers.controller.dto.WinnerCustomerResponse;
 import com.jdm.legends.customers.repository.TemporaryCustomerRepository;
-import com.jdm.legends.customers.service.TemporaryCustomerService.WinnerCustomerException;
 import com.jdm.legends.customers.service.entity.TemporaryCustomer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -38,7 +38,7 @@ public class TemporaryCustomerRepo {
         if (!restTemplateForEntity.getStatusCode().is2xxSuccessful()) {
             String msgError = "Unable to get winner max bid value";
             log.error(msgError);
-            throw new WinnerCustomerException(msgError);
+            throw new RestClientException(msgError);
         }
 
         WinnerCustomerResponse response = restTemplateForEntity.getBody();
@@ -48,7 +48,7 @@ public class TemporaryCustomerRepo {
         }
 
         TemporaryCustomer tempCustomer = repository.findAll().stream().filter(temporaryCustomer -> temporaryCustomer.getHistoryBidId().equals(response.historyBidId())).findFirst().orElseThrow();
-        WinnerCustomerResponse winnerCustomerResponse = new WinnerCustomerResponse(response.bidValue(), response.historyBidId(), tempCustomer.getUserName(), tempCustomer.getEmailAddress());
+        WinnerCustomerResponse winnerCustomerResponse = new WinnerCustomerResponse(response.bidValue(), response.historyBidId(), tempCustomer.getUserName(), tempCustomer.getEmailAddress(), tempCustomer.getId());
         log.info("Selecting the winner with status {} ", OK.value());
         return ResponseEntity.ok(winnerCustomerResponse);
     }

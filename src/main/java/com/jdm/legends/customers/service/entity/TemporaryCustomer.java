@@ -29,4 +29,6 @@ public class TemporaryCustomer {
     private String role;
     private boolean checkInformationStoredTemporarily;
     private Long historyBidId;
+    private Long orderId;
+
 }

@@ -56,12 +56,4 @@ public class TemporaryCustomerService {
         }
     }
 
-    @Slf4j
-    @ResponseStatus(code = INTERNAL_SERVER_ERROR)
-    public static final class WinnerCustomerException extends RuntimeException {
-        public WinnerCustomerException(String message) {
-            super(message);
-            log.error(message);
-        }
-    }
 }
