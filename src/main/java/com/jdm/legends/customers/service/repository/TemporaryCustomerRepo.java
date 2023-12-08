@@ -13,8 +13,9 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.persistence.EntityNotFoundException;
+
 import static java.util.Objects.isNull;
-import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
 
 @Service
@@ -44,20 +45,27 @@ public class TemporaryCustomerRepo {
 
             WinnerCustomerResponse response = restTemplateForEntity.getBody();
             log.info("Get response {} from dealership-cars on route {}", response, uriComponents);
+
             if (isNull(response)) {
-                return ResponseEntity.status(NO_CONTENT).build();
+                return ResponseEntity.noContent().build();
             }
 
-            TemporaryCustomer tempCustomer = repository.findAll().stream().filter(temporaryCustomer -> temporaryCustomer.getHistoryBidId().equals(response.historyBidId())).findFirst().orElseThrow();
-            WinnerCustomerResponse winnerCustomerResponse = new WinnerCustomerResponse(response.bidValue(), response.historyBidId(), tempCustomer.getUserName(), tempCustomer.getEmailAddress(), tempCustomer.getId());
+            TemporaryCustomer tempCustomer = repository.findAll().stream().filter(temporaryCustomer ->
+                            temporaryCustomer.getHistoryBidId().equals(response.historyBidId()))
+                    .findFirst()
+                    .orElseThrow(() -> new EntityNotFoundException("TemporaryCustomer not found"));
+
+            WinnerCustomerResponse winnerCustomerResponse = new WinnerCustomerResponse(response.bidValue()
+                    , response.historyBidId(), tempCustomer.getUserName()
+                    , tempCustomer.getEmailAddress(), tempCustomer.getId());
+
             log.info("Selecting the winner with status {} ", OK.value());
             return ResponseEntity.ok(winnerCustomerResponse);
 
         } catch (RestClientException e) {
             String msgError = "Unable to get winner max bid value";
-            log.error(msgError);
-            throw new RestClientException(msgError);
+            log.error(msgError, e);
+            throw new RestClientException(msgError, e);
         }
     }
-
 }
