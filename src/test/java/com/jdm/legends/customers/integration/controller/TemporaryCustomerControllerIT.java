@@ -7,7 +7,7 @@ import com.jdm.legends.customers.controller.dto.TemporaryCustomerIdResponse;
 import com.jdm.legends.customers.controller.dto.WinnerCustomerResponse;
 import com.jdm.legends.customers.repository.TemporaryCustomerRepository;
 import com.jdm.legends.customers.service.entity.TemporaryCustomer;
-import org.json.JSONArray;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +47,13 @@ public class TemporaryCustomerControllerIT {
     @Autowired
     private TemporaryCustomerRepository repository;
 
+    private TemporaryCustomer temporaryCustomer;
+
+    @BeforeEach
+    void setUp() {
+        temporaryCustomer = repository.findAll().get(0);
+    }
+
     private static final String temporaryCustomerRequestMapping = "/temporary-customer";
 
     @Test
@@ -80,8 +87,6 @@ public class TemporaryCustomerControllerIT {
 
     @Test
     void getTempCustomerById() throws Exception {
-        TemporaryCustomer temporaryCustomer = repository.findAll().get(0);
-
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get(temporaryCustomerRequestMapping + "/{temporaryCustomerId}", temporaryCustomer.getId())
                 .accept(APPLICATION_JSON);
 
@@ -111,11 +116,10 @@ public class TemporaryCustomerControllerIT {
 
     @Test
     void assignOrderIdToTempCustomer() throws Exception {
-        TemporaryCustomer temporaryCustomer = repository.findAll().get(0);
-
+        long orderId = 10L;
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = MockMvcRequestBuilders.post(temporaryCustomerRequestMapping + "/assign/{tempCustomerId}", temporaryCustomer.getId())
                 .accept(APPLICATION_JSON)
-                .content(writeJsonAsString(new OrderIdRequest(temporaryCustomer.getHistoryBidId())))
+                .content(writeJsonAsString(new OrderIdRequest(orderId)))
                 .contentType(APPLICATION_JSON);
 
         mvc.perform(mockHttpServletRequestBuilder)
@@ -123,6 +127,7 @@ public class TemporaryCustomerControllerIT {
                 .andDo(print());
 
         assertThat(temporaryCustomer.getOrderId()).isNotBlank();
+        assertThat(temporaryCustomer.getOrderId()).isEqualTo(String.valueOf(orderId));
     }
 
 }
