@@ -1,5 +1,6 @@
 package com.jdm.legends.customers.service;
 
+import com.jdm.legends.customers.controller.dto.OrderIdRequest;
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerDTO;
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerIdResponse;
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerRequest;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Slf4j
@@ -31,8 +31,7 @@ public class TemporaryCustomerService {
     }
 
     public TemporaryCustomerDTO getTempCustomerById(Long id) {
-        TemporaryCustomer temporaryCustomer = repository.findById(id).orElseThrow(() -> new TemporaryCustomerByIdException("Temporary Customer with specific id cannot be found"));
-        return TemporaryCustomerMapper.INSTANCE.tempCustomerToTempCustomerDTO(temporaryCustomer);
+        return TemporaryCustomerMapper.INSTANCE.tempCustomerToTempCustomerDTO(getTemporaryCustomerById(id));
     }
 
     public TemporaryCustomerIdResponse saveTempCustomer(TemporaryCustomerRequest request, Long historyBidId) {
@@ -45,6 +44,21 @@ public class TemporaryCustomerService {
 
     public ResponseEntity<WinnerCustomerResponse> getWinnerUser(Long carId) {
         return temporaryCustomerRepo.getWinnerUser(carId);
+    }
+
+    public void assignOrderIdToTempCustomer(Long tempCustomerId, OrderIdRequest request) {
+        TemporaryCustomer temporaryCustomerById = getTemporaryCustomerById(tempCustomerId);
+        Long orderId = request.orderId();
+        if (temporaryCustomerById.getOrderId() == null) {
+            temporaryCustomerById.setOrderId(String.valueOf(orderId));
+        } else {
+            temporaryCustomerById.setOrderId(temporaryCustomerById.getOrderId() + ", " + orderId);
+        }
+        repository.save(temporaryCustomerById);
+    }
+
+    private TemporaryCustomer getTemporaryCustomerById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new TemporaryCustomerByIdException("Temporary Customer with specific id cannot be found"));
     }
 
     @Slf4j
