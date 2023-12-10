@@ -126,8 +126,8 @@ public class TemporaryCustomerControllerIT {
                 .andExpect(status().isOk())
                 .andDo(print());
 
-        assertThat(temporaryCustomer.getOrderId()).isNotBlank();
-        assertThat(temporaryCustomer.getOrderId()).isEqualTo(String.valueOf(orderId));
+        assertThat(temporaryCustomer.getOrderId()).isNotNull();
+        assertThat(temporaryCustomer.getOrderId()).isEqualTo(orderId);
     }
 
 }
