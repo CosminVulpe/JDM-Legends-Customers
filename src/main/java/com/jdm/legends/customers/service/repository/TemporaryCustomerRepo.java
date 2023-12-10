@@ -51,7 +51,7 @@ public class TemporaryCustomerRepo {
             }
 
             TemporaryCustomer tempCustomer = repository.findAll().stream().filter(temporaryCustomer ->
-                            temporaryCustomer.getHistoryBidId().equals(response.historyBidId()))
+                            temporaryCustomer.doesHistoryBidExists(String.valueOf(response.historyBidId())))
                     .findFirst()
                     .orElseThrow(() -> new EntityNotFoundException("TemporaryCustomer not found"));
 
