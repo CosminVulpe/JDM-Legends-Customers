@@ -28,6 +28,11 @@ public class TemporaryCustomerController {
         return service.getAllTempCustomers();
     }
 
+    @GetMapping("get/history/{historyBidId}")
+    public List<TemporaryCustomerDTO> getAllTempCustomerByHistoryBidId(@PathVariable String historyBidId) {
+        return service.getAllTempCustomerByHistoryBidId(historyBidId);
+    }
+
     @GetMapping(path = "/{temporaryCustomerId}")
     public TemporaryCustomerDTO getTempCustomerById(@PathVariable("temporaryCustomerId") Long temporaryCustomerId) {
         return service.getTempCustomerById(temporaryCustomerId);

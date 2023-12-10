@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -26,17 +27,34 @@ public class TemporaryCustomerService {
     private final TemporaryCustomerRepository repository;
     private final TemporaryCustomerRepo temporaryCustomerRepo;
 
+    private static final String DELIMITER = ", ";
+
     public List<TemporaryCustomerDTO> getAllTempCustomers() {
         return repository.findAll().stream().map(TemporaryCustomerMapper.INSTANCE::tempCustomerToTempCustomerDTO).toList();
     }
 
     public TemporaryCustomerDTO getTempCustomerById(Long id) {
-        return TemporaryCustomerMapper.INSTANCE.tempCustomerToTempCustomerDTO(getTemporaryCustomerById(id));
+        return TemporaryCustomerMapper.INSTANCE.tempCustomerToTempCustomerDTO(getTemporaryCustomerByIdOrElseThrow(id));
+    }
+
+    public List<TemporaryCustomerDTO> getAllTempCustomerByHistoryBidId(String historyBidId) {
+        List<TemporaryCustomer> temporaryCustomers = repository.findAll().stream()
+                .filter(item -> item.doesHistoryBidExists(historyBidId)).toList();
+
+        return temporaryCustomers.stream().map(TemporaryCustomerMapper.INSTANCE::tempCustomerToTempCustomerDTO).toList();
     }
 
     public TemporaryCustomerIdResponse saveTempCustomer(TemporaryCustomerRequest request, Long historyBidId) {
-        TemporaryCustomer temporaryCustomer = TemporaryCustomerMapper.INSTANCE.tempCustomerRequestToTempCustomerEntity(request);
-        temporaryCustomer.setHistoryBidId(historyBidId);
+        Optional<TemporaryCustomer> tempCustomerByEmailOrUsername = findTempCustomerByEmailOrUsername(request);
+        TemporaryCustomer temporaryCustomer;
+
+        if (tempCustomerByEmailOrUsername.isPresent()) {
+            temporaryCustomer = tempCustomerByEmailOrUsername.get();
+            temporaryCustomer.setHistoryBidId(temporaryCustomer.getHistoryBidId() + DELIMITER + historyBidId);
+        } else {
+            temporaryCustomer = TemporaryCustomerMapper.INSTANCE.tempCustomerRequestToTempCustomerEntity(request);
+            temporaryCustomer.setHistoryBidId(String.valueOf(historyBidId));
+        }
 
         TemporaryCustomer temporaryCustomerSaved = repository.save(temporaryCustomer);
         return new TemporaryCustomerIdResponse(temporaryCustomerSaved.getId());
@@ -47,18 +65,21 @@ public class TemporaryCustomerService {
     }
 
     public void assignOrderIdToTempCustomer(Long tempCustomerId, OrderIdRequest request) {
-        TemporaryCustomer temporaryCustomerById = getTemporaryCustomerById(tempCustomerId);
+        TemporaryCustomer temporaryCustomerById = getTemporaryCustomerByIdOrElseThrow(tempCustomerId);
         Long orderId = request.orderId();
-        if (temporaryCustomerById.getOrderId() == null) {
-            temporaryCustomerById.setOrderId(String.valueOf(orderId));
-        } else {
-            temporaryCustomerById.setOrderId(temporaryCustomerById.getOrderId() + ", " + orderId);
-        }
+        temporaryCustomerById.setOrderId(orderId);
         repository.save(temporaryCustomerById);
     }
 
-    private TemporaryCustomer getTemporaryCustomerById(Long id) {
+    private TemporaryCustomer getTemporaryCustomerByIdOrElseThrow(Long id) {
         return repository.findById(id).orElseThrow(() -> new TemporaryCustomerByIdException("Temporary Customer with specific id cannot be found"));
+    }
+
+    private Optional<TemporaryCustomer> findTempCustomerByEmailOrUsername(TemporaryCustomerRequest request) {
+        return repository.findAll().stream()
+                .filter(item -> item.getUserName().equalsIgnoreCase(request.userName())
+                        || item.getEmailAddress().equalsIgnoreCase(request.emailAddress()))
+                .findFirst();
     }
 
     @Slf4j
