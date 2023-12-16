@@ -43,7 +43,8 @@ public class TemporaryCustomerController {
     @GetMapping(path = "select/winner/{carId}")
     public ResponseEntity<WinnerCustomerResponse> selectWinnerCustomer(@PathVariable Long carId){
         ResponseEntity<WinnerCustomerResponse> winnerCustomerResponseResponseEntity = service.selectWinnerCustomer(carId);
-        emailNotificationService.sendEmail(winnerCustomerResponseResponseEntity.getBody().emailAddress());
+        WinnerCustomerResponse winnerCustomerResponse = winnerCustomerResponseResponseEntity.getBody();
+        emailNotificationService.sendEmail(winnerCustomerResponse.emailAddress(), winnerCustomerResponse.tempCustomerId());
         return winnerCustomerResponseResponseEntity;
     }
 
