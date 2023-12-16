@@ -6,6 +6,7 @@ import com.jdm.legends.customers.controller.dto.TemporaryCustomerRequest;
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerIdResponse;
 import com.jdm.legends.customers.controller.dto.WinnerCustomerResponse;
 import com.jdm.legends.customers.service.TemporaryCustomerService;
+import com.jdm.legends.customers.service.notification.EmailNotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import java.util.List;
 @RequestMapping(path = "/temporary-customer")
 public class TemporaryCustomerController {
     private final TemporaryCustomerService service;
+    private final EmailNotificationService emailNotificationService;
 
     @PostMapping(path = "/save/{historyBidId}")
     public TemporaryCustomerIdResponse saveTempCustomer(@RequestBody TemporaryCustomerRequest request, @PathVariable Long historyBidId){
@@ -38,9 +40,16 @@ public class TemporaryCustomerController {
         return service.getTempCustomerById(temporaryCustomerId);
     }
 
-    @GetMapping(path = "/winner/{carId}")
-    public ResponseEntity<WinnerCustomerResponse> getWinner(@PathVariable Long carId){
-        return service.getWinnerUser(carId);
+    @GetMapping(path = "select/winner/{carId}")
+    public ResponseEntity<WinnerCustomerResponse> selectWinnerCustomer(@PathVariable Long carId){
+        ResponseEntity<WinnerCustomerResponse> winnerCustomerResponseResponseEntity = service.selectWinnerCustomer(carId);
+        emailNotificationService.sendEmail(winnerCustomerResponseResponseEntity.getBody().emailAddress());
+        return winnerCustomerResponseResponseEntity;
+    }
+
+    @GetMapping(path = "get/winner/{carId}")
+    public ResponseEntity<WinnerCustomerResponse> getWinnerCustomer(@PathVariable Long carId){
+        return service.selectWinnerCustomer(carId);
     }
 
     @PostMapping(path = "/assign/{tempCustomerId}")

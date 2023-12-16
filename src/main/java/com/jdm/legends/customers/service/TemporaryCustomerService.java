@@ -60,8 +60,8 @@ public class TemporaryCustomerService {
         return new TemporaryCustomerIdResponse(temporaryCustomerSaved.getId());
     }
 
-    public ResponseEntity<WinnerCustomerResponse> getWinnerUser(Long carId) {
-        return temporaryCustomerRepo.getWinnerUser(carId);
+    public ResponseEntity<WinnerCustomerResponse> selectWinnerCustomer(Long carId) {
+        return temporaryCustomerRepo.selectWinnerCustomer(carId);
     }
 
     public void assignOrderIdToTempCustomer(Long tempCustomerId, OrderIdRequest request) {

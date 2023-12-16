@@ -33,7 +33,7 @@ public class TemporaryCustomerRepo {
         this.serverHost = serverHost;
     }
 
-    public ResponseEntity<WinnerCustomerResponse> getWinnerUser(Long carId) {
+    public ResponseEntity<WinnerCustomerResponse> selectWinnerCustomer(Long carId) {
         try {
             UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(serverHost + dealershipCarsServerPort + "/car/max/bidValue/{carId}").buildAndExpand(carId);
             ResponseEntity<WinnerCustomerResponse> restTemplateForEntity = restTemplate.getForEntity(uriComponents.toUriString(), WinnerCustomerResponse.class);

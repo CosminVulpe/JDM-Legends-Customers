@@ -100,21 +100,6 @@ public class TemporaryCustomerControllerIT {
     }
 
     @Test
-    @Disabled("under development")
-    void getWinnerCar() throws Exception {
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get(temporaryCustomerRequestMapping + "/winner/{carId}", 1L)
-                .accept(APPLICATION_JSON);
-
-        String contentAsString = mvc.perform(requestBuilder).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
-
-        ResponseEntity<WinnerCustomerResponse> responseResponseEntity = readValueResponseEntity(contentAsString, new TypeReference<>() {
-        });
-
-        assertThat(responseResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(responseResponseEntity.getBody()).isNotNull();
-    }
-
-    @Test
     void assignOrderIdToTempCustomer() throws Exception {
         long orderId = 10L;
         MockHttpServletRequestBuilder mockHttpServletRequestBuilder = MockMvcRequestBuilders.post(temporaryCustomerRequestMapping + "/assign/{tempCustomerId}", temporaryCustomer.getId())
