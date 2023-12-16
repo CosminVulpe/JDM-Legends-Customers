@@ -1,11 +1,13 @@
 package com.jdm.legends.customers.integration.service;
 
+import com.jdm.legends.customers.controller.dto.OrderIdRequest;
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerDTO;
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerIdResponse;
 import com.jdm.legends.customers.repository.TemporaryCustomerRepository;
 import com.jdm.legends.customers.service.TemporaryCustomerService;
 import com.jdm.legends.customers.service.TemporaryCustomerService.TemporaryCustomerByIdException;
 import com.jdm.legends.customers.service.entity.TemporaryCustomer;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,6 +35,13 @@ class TemporaryCustomerServiceIT {
     @Autowired
     private TemporaryCustomerService service;
 
+    private TemporaryCustomer temporaryCustomer;
+
+    @BeforeEach
+    void setUp() {
+        temporaryCustomer = repository.findAll().get(0);
+    }
+
     @Test
     void getAllTempCustomersSuccessfully() {
         List<TemporaryCustomerDTO> allTempCustomers = service.getAllTempCustomers();
@@ -42,7 +51,6 @@ class TemporaryCustomerServiceIT {
 
     @Test
     void getTempCustomerByIdSuccessfully() {
-        TemporaryCustomer temporaryCustomer = repository.findAll().get(0);
         TemporaryCustomerDTO tempCustomerById = service.getTempCustomerById(temporaryCustomer.getId());
         assertThat(tempCustomerById).isNotNull();
     }
@@ -59,5 +67,14 @@ class TemporaryCustomerServiceIT {
         TemporaryCustomerIdResponse temporaryCustomerIdResponse = service.saveTempCustomer(getTemporaryCustomerRequest(), 1L);
         assertThat(temporaryCustomerIdResponse).isNotNull();
         assertThat(temporaryCustomerIdResponse.id()).isNotNull();
+    }
+
+    @Test
+    void assignOrderIdToTempCustomer() {
+        long orderId = 10L;
+        service.assignOrderIdToTempCustomer(temporaryCustomer.getId(), new OrderIdRequest(orderId));
+
+        assertThat(temporaryCustomer.getOrderId()).isNotNull();
+        assertThat(temporaryCustomer.getOrderId()).isEqualTo(orderId);
     }
 }

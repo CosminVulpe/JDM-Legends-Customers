@@ -1,5 +1,6 @@
 package com.jdm.legends.customers.service;
 
+import com.jdm.legends.customers.controller.dto.OrderIdRequest;
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerDTO;
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerIdResponse;
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerRequest;
@@ -15,8 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
+import java.util.Optional;
 
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Slf4j
@@ -26,18 +27,34 @@ public class TemporaryCustomerService {
     private final TemporaryCustomerRepository repository;
     private final TemporaryCustomerRepo temporaryCustomerRepo;
 
+    private static final String DELIMITER = ", ";
+
     public List<TemporaryCustomerDTO> getAllTempCustomers() {
         return repository.findAll().stream().map(TemporaryCustomerMapper.INSTANCE::tempCustomerToTempCustomerDTO).toList();
     }
 
     public TemporaryCustomerDTO getTempCustomerById(Long id) {
-        TemporaryCustomer temporaryCustomer = repository.findById(id).orElseThrow(() -> new TemporaryCustomerByIdException("Temporary Customer with specific id cannot be found"));
-        return TemporaryCustomerMapper.INSTANCE.tempCustomerToTempCustomerDTO(temporaryCustomer);
+        return TemporaryCustomerMapper.INSTANCE.tempCustomerToTempCustomerDTO(getTemporaryCustomerByIdOrElseThrow(id));
+    }
+
+    public List<TemporaryCustomerDTO> getAllTempCustomerByHistoryBidId(String historyBidId) {
+        List<TemporaryCustomer> temporaryCustomers = repository.findAll().stream()
+                .filter(item -> item.doesHistoryBidExists(historyBidId)).toList();
+
+        return temporaryCustomers.stream().map(TemporaryCustomerMapper.INSTANCE::tempCustomerToTempCustomerDTO).toList();
     }
 
     public TemporaryCustomerIdResponse saveTempCustomer(TemporaryCustomerRequest request, Long historyBidId) {
-        TemporaryCustomer temporaryCustomer = TemporaryCustomerMapper.INSTANCE.tempCustomerRequestToTempCustomerEntity(request);
-        temporaryCustomer.setHistoryBidId(historyBidId);
+        Optional<TemporaryCustomer> tempCustomerByEmailOrUsername = findTempCustomerByEmailOrUsername(request);
+        TemporaryCustomer temporaryCustomer;
+
+        if (tempCustomerByEmailOrUsername.isPresent()) {
+            temporaryCustomer = tempCustomerByEmailOrUsername.get();
+            temporaryCustomer.setHistoryBidId(temporaryCustomer.getHistoryBidId() + DELIMITER + historyBidId);
+        } else {
+            temporaryCustomer = TemporaryCustomerMapper.INSTANCE.tempCustomerRequestToTempCustomerEntity(request);
+            temporaryCustomer.setHistoryBidId(String.valueOf(historyBidId));
+        }
 
         TemporaryCustomer temporaryCustomerSaved = repository.save(temporaryCustomer);
         return new TemporaryCustomerIdResponse(temporaryCustomerSaved.getId());
@@ -45,6 +62,24 @@ public class TemporaryCustomerService {
 
     public ResponseEntity<WinnerCustomerResponse> getWinnerUser(Long carId) {
         return temporaryCustomerRepo.getWinnerUser(carId);
+    }
+
+    public void assignOrderIdToTempCustomer(Long tempCustomerId, OrderIdRequest request) {
+        TemporaryCustomer temporaryCustomerById = getTemporaryCustomerByIdOrElseThrow(tempCustomerId);
+        Long orderId = request.orderId();
+        temporaryCustomerById.setOrderId(orderId);
+        repository.save(temporaryCustomerById);
+    }
+
+    private TemporaryCustomer getTemporaryCustomerByIdOrElseThrow(Long id) {
+        return repository.findById(id).orElseThrow(() -> new TemporaryCustomerByIdException("Temporary Customer with specific id cannot be found"));
+    }
+
+    private Optional<TemporaryCustomer> findTempCustomerByEmailOrUsername(TemporaryCustomerRequest request) {
+        return repository.findAll().stream()
+                .filter(item -> item.getUserName().equalsIgnoreCase(request.userName())
+                        || item.getEmailAddress().equalsIgnoreCase(request.emailAddress()))
+                .findFirst();
     }
 
     @Slf4j
@@ -56,12 +91,4 @@ public class TemporaryCustomerService {
         }
     }
 
-    @Slf4j
-    @ResponseStatus(code = INTERNAL_SERVER_ERROR)
-    public static final class WinnerCustomerException extends RuntimeException {
-        public WinnerCustomerException(String message) {
-            super(message);
-            log.error(message);
-        }
-    }
 }

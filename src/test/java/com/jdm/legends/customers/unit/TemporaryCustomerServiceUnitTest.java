@@ -1,5 +1,6 @@
 package com.jdm.legends.customers.unit;
 
+import com.jdm.legends.customers.controller.dto.OrderIdRequest;
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerDTO;
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerIdResponse;
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerRequest;
@@ -39,7 +40,7 @@ class TemporaryCustomerServiceUnitTest {
 
     @Test
     void getAllTempUsersSuccessfully() {
-        when(repository.findAll()).thenReturn(List.of(TemporaryCustomer.builder().build()));
+        when(repository.findAll()).thenReturn(List.of(getTempCustomerMock()));
 
         List<TemporaryCustomerDTO> allTempCustomers = temporaryCustomerService.getAllTempCustomers();
         assertThat(allTempCustomers).hasSizeGreaterThan(0);
@@ -47,7 +48,7 @@ class TemporaryCustomerServiceUnitTest {
 
     @Test
     void getTempCustomerById() {
-        when(repository.findById(any())).thenReturn(Optional.of(getTempCustomerMock()));
+        computeGetTempCustomerByIdMock(getTempCustomerMock());
         TemporaryCustomerDTO tempCustomerById = temporaryCustomerService.getTempCustomerById(1L);
 
         assertThat(tempCustomerById.fullName()).isEqualTo(FULL_NAME);
@@ -55,10 +56,9 @@ class TemporaryCustomerServiceUnitTest {
         assertThat(tempCustomerById.emailAddress()).isEqualTo(MAIL);
     }
 
-
     @Test
     void getTempCustomerByIdThrowsException() {
-        when(repository.findById(any())).thenReturn(Optional.empty());
+        computeGetTempCustomerByIdMock(null);
         assertThatThrownBy(() -> temporaryCustomerService.getTempCustomerById(1L))
                 .isInstanceOf(TemporaryCustomerByIdException.class)
                 .hasMessage("Temporary Customer with specific id cannot be found");
@@ -73,6 +73,24 @@ class TemporaryCustomerServiceUnitTest {
         verify(repository).save(any());
         assertThat(temporaryCustomerIdResponse).isNotNull();
         assertThat(temporaryCustomerIdResponse.id()).isNotNull();
+    }
+
+    @Test
+    void assignOrderIdToTempCustomer() {
+        TemporaryCustomer tempCustomerMock = getTempCustomerMock();
+        long orderId = 10L;
+
+        computeGetTempCustomerByIdMock(tempCustomerMock);
+
+        temporaryCustomerService.assignOrderIdToTempCustomer(tempCustomerMock.getId(), new OrderIdRequest(orderId));
+        verify(repository).save(any());
+    }
+
+    private void computeGetTempCustomerByIdMock(TemporaryCustomer temporaryCustomer) {
+        when(repository.findById(any()))
+                .thenReturn(
+                       Optional.ofNullable(temporaryCustomer)
+                );
     }
 
 }

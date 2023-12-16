@@ -6,6 +6,7 @@ public record WinnerCustomerResponse(
         BigDecimal bidValue
         , Long historyBidId
         , String userName
-        , String emailAddress
+        , String emailAddress,
+        Long tempCustomerId
 ) {
 }

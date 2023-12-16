@@ -1,11 +1,13 @@
 package com.jdm.legends.customers.integration.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.jdm.legends.customers.controller.dto.OrderIdRequest;
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerDTO;
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerIdResponse;
 import com.jdm.legends.customers.controller.dto.WinnerCustomerResponse;
 import com.jdm.legends.customers.repository.TemporaryCustomerRepository;
 import com.jdm.legends.customers.service.entity.TemporaryCustomer;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,7 @@ import static com.jdm.legends.customers.utils.UtilsMock.writeJsonAsString;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
@@ -43,6 +46,13 @@ public class TemporaryCustomerControllerIT {
 
     @Autowired
     private TemporaryCustomerRepository repository;
+
+    private TemporaryCustomer temporaryCustomer;
+
+    @BeforeEach
+    void setUp() {
+        temporaryCustomer = repository.findAll().get(0);
+    }
 
     private static final String temporaryCustomerRequestMapping = "/temporary-customer";
 
@@ -77,8 +87,6 @@ public class TemporaryCustomerControllerIT {
 
     @Test
     void getTempCustomerById() throws Exception {
-        TemporaryCustomer temporaryCustomer = repository.findAll().get(0);
-
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get(temporaryCustomerRequestMapping + "/{temporaryCustomerId}", temporaryCustomer.getId())
                 .accept(APPLICATION_JSON);
 
@@ -106,5 +114,20 @@ public class TemporaryCustomerControllerIT {
         assertThat(responseResponseEntity.getBody()).isNotNull();
     }
 
+    @Test
+    void assignOrderIdToTempCustomer() throws Exception {
+        long orderId = 10L;
+        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = MockMvcRequestBuilders.post(temporaryCustomerRequestMapping + "/assign/{tempCustomerId}", temporaryCustomer.getId())
+                .accept(APPLICATION_JSON)
+                .content(writeJsonAsString(new OrderIdRequest(orderId)))
+                .contentType(APPLICATION_JSON);
+
+        mvc.perform(mockHttpServletRequestBuilder)
+                .andExpect(status().isOk())
+                .andDo(print());
+
+        assertThat(temporaryCustomer.getOrderId()).isNotNull();
+        assertThat(temporaryCustomer.getOrderId()).isEqualTo(orderId);
+    }
 
 }
