@@ -3,7 +3,6 @@ package com.jdm.legends.customers.utils;
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerRequest;
 import com.jdm.legends.customers.service.entity.ReminderEmail;
 import com.jdm.legends.customers.service.entity.TemporaryCustomer;
-import org.junit.jupiter.api.AfterAll;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
