@@ -20,13 +20,13 @@ import static org.springframework.http.HttpStatus.OK;
 
 @Service
 @Slf4j
-public class TemporaryCustomerRepo {
+public class DealershipCarsRepo {
     private final TemporaryCustomerRepository repository;
     private final RestTemplate restTemplate;
     private final int dealershipCarsServerPort;
     private final String serverHost;
 
-    public TemporaryCustomerRepo(TemporaryCustomerRepository repository, RestTemplate restTemplate, @Value("${jdm-legends-dealership-cars-port}") int dealershipCarsServerPort, @Value("${server.host}") String serverHost) {
+    public DealershipCarsRepo(TemporaryCustomerRepository repository, RestTemplate restTemplate, @Value("${jdm-legends-dealership-cars-port}") int dealershipCarsServerPort, @Value("${server.host}") String serverHost) {
         this.repository = repository;
         this.restTemplate = restTemplate;
         this.dealershipCarsServerPort = dealershipCarsServerPort;
