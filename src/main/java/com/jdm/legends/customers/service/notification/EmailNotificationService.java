@@ -39,7 +39,7 @@ public class EmailNotificationService {
                     <p>Please visit the following link to finish the order:</p>
                     <p><a href='http://localhost:8085/reminder-email?tempCustomerId=%d'>Click here to continue order</a></p>
                     <p>OR</p>
-                    <p><a href='www.jdm-legends-order?tempCustomerId=%d'>Click here to cancel order</a></p>
+                    <p><a href='http://localhost:8080/car/cancelReservation/?tempCustomerId=%d'>Click here to cancel order</a></p>
                     <p>Best regards, JDM-Legends Team</p>
                     """.formatted(tempCustomerId, tempCustomerId);
             messageHelper.setText(emailBody, true);
