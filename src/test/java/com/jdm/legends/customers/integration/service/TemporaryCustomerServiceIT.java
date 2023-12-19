@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 
-@SpringBootTest(webEnvironment = RANDOM_PORT)
+@SpringBootTest
 @ActiveProfiles("test-in-memory")
 @Sql("/add-temporary-customers.sql")
 @Transactional

@@ -8,7 +8,7 @@ import com.jdm.legends.customers.controller.dto.WinnerCustomerResponse;
 import com.jdm.legends.customers.repository.TemporaryCustomerRepository;
 import com.jdm.legends.customers.service.entity.TemporaryCustomer;
 import com.jdm.legends.customers.service.mapping.TemporaryCustomerMapper;
-import com.jdm.legends.customers.service.repository.TemporaryCustomerRepo;
+import com.jdm.legends.customers.service.repository.DealershipCarsRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RequiredArgsConstructor
 public class TemporaryCustomerService {
     private final TemporaryCustomerRepository repository;
-    private final TemporaryCustomerRepo temporaryCustomerRepo;
+    private final DealershipCarsRepo dealershipCarsRepo;
 
     private static final String DELIMITER = ", ";
 
@@ -60,8 +60,8 @@ public class TemporaryCustomerService {
         return new TemporaryCustomerIdResponse(temporaryCustomerSaved.getId());
     }
 
-    public ResponseEntity<WinnerCustomerResponse> getWinnerUser(Long carId) {
-        return temporaryCustomerRepo.getWinnerUser(carId);
+    public ResponseEntity<WinnerCustomerResponse> selectWinnerCustomer(Long carId) {
+        return dealershipCarsRepo.selectWinnerCustomer(carId);
     }
 
     public void assignOrderIdToTempCustomer(Long tempCustomerId, OrderIdRequest request) {
