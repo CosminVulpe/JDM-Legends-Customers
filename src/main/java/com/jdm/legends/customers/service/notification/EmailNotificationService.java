@@ -59,7 +59,7 @@ public class EmailNotificationService {
     private static final class EmailNotificationException extends RuntimeException {
         public EmailNotificationException(String message, Throwable cause) {
             super(message, cause);
-            log.error(message);
+            log.error(message, cause);
         }
     }
 }
