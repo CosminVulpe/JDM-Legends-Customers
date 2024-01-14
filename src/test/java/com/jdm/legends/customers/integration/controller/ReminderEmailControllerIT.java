@@ -1,7 +1,7 @@
 package com.jdm.legends.customers.integration.controller;
 
-import com.jdm.legends.customers.repository.ReminderEmailRepository;
-import com.jdm.legends.customers.repository.TemporaryCustomerRepository;
+import com.jdm.legends.customers.service.repository.ReminderEmailRepository;
+import com.jdm.legends.customers.service.repository.TemporaryCustomerRepository;
 import com.jdm.legends.customers.service.entity.ReminderEmail;
 import com.jdm.legends.customers.service.entity.TemporaryCustomer;
 import com.jdm.legends.customers.utils.TestDummy;

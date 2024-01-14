@@ -1,7 +1,6 @@
 package com.jdm.legends.customers.service.repository;
 
 import com.jdm.legends.customers.controller.dto.WinnerCustomerResponse;
-import com.jdm.legends.customers.repository.TemporaryCustomerRepository;
 import com.jdm.legends.customers.service.entity.TemporaryCustomer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

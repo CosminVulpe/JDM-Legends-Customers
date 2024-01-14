@@ -3,6 +3,7 @@ package com.jdm.legends.customers.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -17,8 +18,10 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         // Protection of CSRF
         httpSecurity.csrf(config ->
-                config.ignoringAntMatchers("/register/**")
+                config.ignoringAntMatchers("/register-customer/**")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
+
+        httpSecurity.sessionManagement(configurer ->configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // Route protection
         httpSecurity.authorizeHttpRequests(requests ->
@@ -31,6 +34,6 @@ public class SecurityConfig {
 
     @Bean
     PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(10);
     }
 }

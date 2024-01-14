@@ -1,7 +1,7 @@
 package com.jdm.legends.customers.service;
 
 import com.jdm.legends.customers.controller.dto.ReminderEmailDTO;
-import com.jdm.legends.customers.repository.ReminderEmailRepository;
+import com.jdm.legends.customers.service.repository.ReminderEmailRepository;
 import com.jdm.legends.customers.service.entity.ReminderEmail;
 import com.jdm.legends.customers.service.mapping.ReminderEmailMapper;
 import lombok.RequiredArgsConstructor;
