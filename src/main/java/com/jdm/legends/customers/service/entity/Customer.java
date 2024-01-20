@@ -20,6 +20,7 @@ public class Customer {
     private String fullName;
     private String userName;
     private String emailAddress;
+    private String phoneNumber;
     @Enumerated(EnumType.STRING)
     private Roles role;
     private String pwd;
