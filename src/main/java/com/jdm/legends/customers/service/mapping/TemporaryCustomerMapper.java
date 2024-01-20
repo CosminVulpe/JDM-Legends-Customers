@@ -3,7 +3,7 @@ package com.jdm.legends.customers.service.mapping;
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerDTO;
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerRequest;
 import com.jdm.legends.customers.service.entity.TemporaryCustomer;
-import com.jdm.legends.customers.service.enums.Roles;
+import com.jdm.legends.customers.service.enums.RolesType;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -19,10 +19,9 @@ public interface TemporaryCustomerMapper {
 
     TemporaryCustomerDTO tempCustomerToTempCustomerDTO(TemporaryCustomer temporaryCustomer);
 
-
     default String mapRole(TemporaryCustomerRequest request) {
         return request.checkInformationStoredTemporarily()
-                ? Roles.POTENTIAL_CLIENT.getValue()
-                : Roles.ANONYMOUS.getValue();
+                ? RolesType.POTENTIAL_CLIENT.getValue()
+                : RolesType.ANONYMOUS.getValue();
     }
 }

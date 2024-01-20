@@ -1,6 +1,5 @@
 package com.jdm.legends.customers.service.entity;
 
-import com.jdm.legends.customers.service.enums.Roles;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,7 +20,9 @@ public class Customer {
     private String userName;
     private String emailAddress;
     private String phoneNumber;
-    @Enumerated(EnumType.STRING)
-    private Roles role;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "roles_id", referencedColumnName = "id")
+    private Role role;
     private String pwd;
 }

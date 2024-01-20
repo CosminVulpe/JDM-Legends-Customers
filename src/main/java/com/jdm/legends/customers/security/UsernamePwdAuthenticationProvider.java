@@ -2,6 +2,7 @@ package com.jdm.legends.customers.security;
 
 
 import com.jdm.legends.customers.service.entity.Customer;
+import com.jdm.legends.customers.service.entity.Role;
 import com.jdm.legends.customers.service.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -36,9 +37,13 @@ public class UsernamePwdAuthenticationProvider implements AuthenticationProvider
         }
 
         List<GrantedAuthority> authorities = new ArrayList<>(
-                List.of(new SimpleGrantedAuthority(customer.getRole().name()))
+                getAuthorities(customer.getRole())
         );
         return new UsernamePasswordAuthenticationToken(emailAddress, pwd, authorities);
+    }
+
+    private List<SimpleGrantedAuthority> getAuthorities(Role roles){
+        return roles.getRolesType().stream().map(role -> new SimpleGrantedAuthority(role.name())).toList();
     }
 
     @Override
