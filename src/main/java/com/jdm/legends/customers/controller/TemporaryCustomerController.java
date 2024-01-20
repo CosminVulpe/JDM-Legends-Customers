@@ -20,6 +20,11 @@ public class TemporaryCustomerController {
     private final TemporaryCustomerService service;
     private final EmailNotificationService emailNotificationService;
 
+//    @GetMapping("/hello")
+//    public String hello() {
+//        return "Hello";
+//    }
+
     @PostMapping(path = "/save/{historyBidId}")
     public TemporaryCustomerIdResponse saveTempCustomer(@RequestBody TemporaryCustomerRequest request, @PathVariable Long historyBidId){
        return service.saveTempCustomer(request ,historyBidId);
