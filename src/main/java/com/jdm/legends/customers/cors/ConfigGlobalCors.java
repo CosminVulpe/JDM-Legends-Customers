@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class ConfigGlobalCors implements WebMvcConfigurer {
-    private final int maxAge;
+    private final int maxAge; // 1hour
 
     public ConfigGlobalCors(@Value("${cors.max-age-time}") int maxAge) {
         this.maxAge = maxAge;
