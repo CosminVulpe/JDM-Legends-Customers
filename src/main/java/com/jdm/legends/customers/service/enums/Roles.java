@@ -15,10 +15,5 @@ public enum Roles {
 
     private final String value;
 
-    public static Roles getRole(String role) {
-        return Arrays.stream(Roles.values()).filter(item -> item.name().equalsIgnoreCase(role) || item.value.equalsIgnoreCase(role))
-                .findFirst()
-                .orElseThrow(() -> new RolesNotFoundException("Unable to find " + role + " within the system"));
-    }
 }
 

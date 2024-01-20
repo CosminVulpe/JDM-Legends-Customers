@@ -1,16 +1,19 @@
 package com.jdm.legends.customers.controller.dto;
 
-import com.jdm.legends.customers.service.enums.Roles;
-
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 public record CustomerRequest(
+        @NotBlank
         String fullName,
+
+        @NotBlank
         String userName,
 
         @Email
         String emailAddress,
-        Roles role,
+
+        @NotBlank
         String pwd
 ) {
 }

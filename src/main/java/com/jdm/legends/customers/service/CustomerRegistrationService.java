@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import static com.jdm.legends.customers.service.enums.Roles.CLIENT;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -18,6 +20,7 @@ public class CustomerRegistrationService {
 
     public void registerCustomer(CustomerRequest request) {
         Customer customer = CustomerMapper.INSTANCE.customerRequestToCustomerEntity(request);
+        customer.setRole(CLIENT);
         customer.setPwd(passwordEncoder.encode(customer.getPwd()));
 
         Customer registeredCustomer = repository.save(customer);

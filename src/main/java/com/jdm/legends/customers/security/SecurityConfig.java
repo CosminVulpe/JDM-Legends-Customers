@@ -21,7 +21,7 @@ public class SecurityConfig {
                 config.ignoringAntMatchers("/register-customer/**")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
 
-        httpSecurity.sessionManagement(configurer ->configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        httpSecurity.sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // Route protection
         httpSecurity.authorizeHttpRequests(requests ->
