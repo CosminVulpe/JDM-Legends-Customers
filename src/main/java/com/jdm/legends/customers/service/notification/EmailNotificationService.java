@@ -40,7 +40,7 @@ public class EmailNotificationService {
                     <p><a href='http://localhost:8085/reminder-email?tempCustomerId=%d'>Click here to continue order</a></p>
                     <p>OR</p>
                     <p><a href='http://localhost:8080/car/cancelReservation/?tempCustomerId=%d'>Click here to cancel order</a></p>
-                    <p>Best regards, JDM-Legends Team</p>
+                    <p>Best regards, <br>JDM-Legends Team</p>
                     """.formatted(tempCustomerId, tempCustomerId);
             messageHelper.setText(emailBody, true);
             messageHelper.setSubject("Winner Car Bid JDM-Legends 🔰");

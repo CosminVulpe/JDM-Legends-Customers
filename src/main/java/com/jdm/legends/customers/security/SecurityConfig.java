@@ -1,7 +1,6 @@
 package com.jdm.legends.customers.security;
 
 import com.jdm.legends.customers.security.filters.CsrfCookieFilter;
-import com.jdm.legends.customers.service.enums.Roles;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,7 +23,7 @@ public class SecurityConfig {
 
         // Protection of CSRF
         httpSecurity.csrf(config ->
-                config.ignoringAntMatchers("/register-customer/**")
+                config.ignoringAntMatchers("/register-customer/**", "/temporary-customer/**")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
         httpSecurity.addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
 
@@ -32,8 +31,8 @@ public class SecurityConfig {
 
         // Route protection
         httpSecurity.authorizeHttpRequests(requests ->
-//                        requests.antMatchers("/temporary-customer/hello").hasAnyAuthority(Roles.CLIENT.name())
-                                requests.antMatchers("/reminder-email/**", "/register-customer/**").permitAll()
+                        requests.antMatchers("/reminder-email/**"
+                                , "/register-customer/**").permitAll()
                 )
                 .httpBasic(withDefaults())
                 .formLogin(withDefaults());
