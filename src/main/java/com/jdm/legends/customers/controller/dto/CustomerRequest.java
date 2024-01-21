@@ -12,7 +12,8 @@ public record CustomerRequest(
         String fullName,
         @NotBlank
         String userName,
-        List<RolesType>rolesTypes,
+
+        List<RolesType> rolesTypes,
 
         @NotBlank
         String phoneNumber,

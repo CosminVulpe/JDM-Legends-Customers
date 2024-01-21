@@ -18,6 +18,7 @@ public class ConfigGlobalCors implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOriginPatterns("http://localhost:3000/")
                 .allowedHeaders("*")
+                .exposedHeaders("Authorization")
                 .allowCredentials(true)
                 .maxAge(maxAge);
     }

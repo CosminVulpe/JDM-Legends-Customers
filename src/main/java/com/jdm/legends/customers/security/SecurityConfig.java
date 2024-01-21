@@ -11,6 +11,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
+import static com.jdm.legends.customers.service.enums.RolesType.CLIENT;
+import static com.jdm.legends.customers.service.enums.RolesType.POTENTIAL_CLIENT;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
@@ -31,8 +33,8 @@ public class SecurityConfig {
 
         // Route protection
         httpSecurity.authorizeHttpRequests(requests ->
-                        requests.antMatchers("/register-customer/**","/temporary-customer/**","/reminder-email/**").permitAll()
-//                                .antMatchers("/reminder-email/**").hasAnyRole(CLIENT.name(), POTENTIAL_CLIENT.name())
+                        requests.antMatchers("/register-customer/**","/temporary-customer/**").permitAll()
+                                .antMatchers("/reminder-email/**").hasAnyRole(CLIENT.name(), POTENTIAL_CLIENT.name())
                 )
                 .httpBasic(withDefaults())
                 .formLogin(withDefaults());

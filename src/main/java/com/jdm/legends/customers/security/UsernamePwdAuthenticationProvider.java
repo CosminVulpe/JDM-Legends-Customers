@@ -32,7 +32,7 @@ public class UsernamePwdAuthenticationProvider implements AuthenticationProvider
         Customer customer = customerRepository.findCustomerByEmailAddress(emailAddress)
                 .orElseThrow(() -> new EntityNotFoundException("No customer registered with this details"));
 
-        if (!passwordEncoder.matches(pwd,customer.getPwd())) {
+        if (!passwordEncoder.matches(pwd, customer.getPwd())) {
             throw new BadCredentialsException("Invalid password");
         }
 
@@ -42,8 +42,8 @@ public class UsernamePwdAuthenticationProvider implements AuthenticationProvider
         return new UsernamePasswordAuthenticationToken(emailAddress, pwd, authorities);
     }
 
-    private List<SimpleGrantedAuthority> getAuthorities(Role roles){
-        return roles.getRolesType().stream().map(role -> new SimpleGrantedAuthority(role.name())).toList();
+    private List<SimpleGrantedAuthority> getAuthorities(Role roles) {
+        return roles.getRolesType().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role.name())).toList();
     }
 
     @Override

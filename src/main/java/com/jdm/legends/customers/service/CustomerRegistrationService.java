@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.PersistenceException;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.jdm.legends.customers.service.enums.RolesType.CLIENT;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -31,10 +32,16 @@ public class CustomerRegistrationService {
     private final RoleRepository roleRepository;
 
     public ResponseEntity<HttpStatus> registerCustomer(CustomerRequest request) {
+        Optional<Customer> customerByEmailAddress = repository.findCustomerByEmailAddress(request.emailAddress());
+        if (customerByEmailAddress.isPresent()) {
+            log.warn("Username {} already in the database", customerByEmailAddress.get().getEmailAddress());
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
         Customer customer = CustomerMapper.INSTANCE.customerRequestToCustomerEntity(request);
-        Role role = new Role( request.rolesTypes() == null || request.rolesTypes().isEmpty()
+        Role role = new Role(request.rolesTypes() == null || request.rolesTypes().isEmpty()
                 ? List.of(CLIENT)
-                : request.rolesTypes() );
+                : request.rolesTypes());
         roleRepository.save(role);
 
         customer.setRole(role);
