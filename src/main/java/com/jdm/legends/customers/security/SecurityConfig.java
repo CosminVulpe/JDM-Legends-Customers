@@ -1,6 +1,10 @@
 package com.jdm.legends.customers.security;
 
 import com.jdm.legends.customers.security.filters.CsrfCookieFilter;
+import com.jdm.legends.customers.security.filters.JwtTokenGeneratorFilter;
+import com.jdm.legends.customers.security.filters.JwtTokenValidationFilter;
+import com.jdm.legends.customers.security.service.JwtGeneratorService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,24 +20,29 @@ import static com.jdm.legends.customers.service.enums.RolesType.POTENTIAL_CLIENT
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
     private static final int PASSWORD_ENCODER_STRENGTH = 10;
+    private final JwtGeneratorService jwtGeneratorService;
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.securityContext().requireExplicitSave(false);
-
         // Protection of CSRF
         httpSecurity.csrf(config ->
-                config.ignoringAntMatchers("/register-customer/**", "/temporary-customer/**")
+                config.ignoringAntMatchers("/register-customer/**", "/temporary-customer/**", "/sign")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
+
+        // Add custom filters
         httpSecurity.addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
+        httpSecurity.addFilterAfter(new JwtTokenGeneratorFilter(jwtGeneratorService), BasicAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(new JwtTokenValidationFilter(jwtGeneratorService), BasicAuthenticationFilter.class);
 
         httpSecurity.sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // Route protection
         httpSecurity.authorizeHttpRequests(requests ->
-                        requests.antMatchers("/register-customer/**","/temporary-customer/**").permitAll()
+                        requests.antMatchers("/sign").authenticated()
+                                .antMatchers("/register-customer/**", "/temporary-customer/**").permitAll()
                                 .antMatchers("/reminder-email/**").hasAnyRole(CLIENT.name(), POTENTIAL_CLIENT.name())
                 )
                 .httpBasic(withDefaults())

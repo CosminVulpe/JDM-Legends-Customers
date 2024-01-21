@@ -3,7 +3,6 @@ package com.jdm.legends.customers.service;
 import com.jdm.legends.customers.controller.dto.CustomerRequest;
 import com.jdm.legends.customers.service.entity.Customer;
 import com.jdm.legends.customers.service.entity.Role;
-import com.jdm.legends.customers.service.enums.RolesType;
 import com.jdm.legends.customers.service.mapping.CustomerMapper;
 import com.jdm.legends.customers.service.repository.CustomerRepository;
 import com.jdm.legends.customers.service.repository.RoleRepository;
@@ -26,7 +25,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class CustomerRegistrationService {
+public class CustomerService {
     private final CustomerRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
