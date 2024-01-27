@@ -41,9 +41,9 @@ public class SecurityConfig {
 
         // Route protection
         httpSecurity.authorizeHttpRequests(requests ->
-                        requests.antMatchers("/register-customer/**", "/temporary-customer/**", "/reminder-email/all").permitAll()
-                                .antMatchers("/sign").authenticated()
+                        requests.antMatchers("/sign").authenticated()
                                 .antMatchers("/reminder-email/*").hasAnyRole(CLIENT.name(), POTENTIAL_CLIENT.name())
+                                .antMatchers("/register-customer/**", "/temporary-customer/**", "/reminder-email/all").permitAll()
                 )
                 .httpBasic(withDefaults())
                 .formLogin(withDefaults());

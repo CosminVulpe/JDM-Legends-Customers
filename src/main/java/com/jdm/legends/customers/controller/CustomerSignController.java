@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/sign")
 @RequiredArgsConstructor
+@RequestMapping("/sign")
 public class CustomerSignController {
     private final CustomerRepository customerRepository;
 
