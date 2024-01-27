@@ -40,6 +40,6 @@ public class JwtTokenGeneratorFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return !request.getServletPath().equals("/sign");
+        return !request.getServletPath().equals("/sign"); // to be executed for only /sign API
     }
 }

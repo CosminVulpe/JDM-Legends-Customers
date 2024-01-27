@@ -19,7 +19,9 @@ public class JwtGeneratorService {
     private final long jwtExpirationTime; // 8h
     private final String jwtSecretKey;
 
-    public JwtGeneratorService(@Value("${jwt.auth.expires_in}") long jwtExpirationTime, @Value("${jwt.auth.secret_key}") String jwtSecretKey) {
+    public JwtGeneratorService(
+            @Value("${jwt.auth.expires_in}") long jwtExpirationTime
+            , @Value("${jwt.auth.secret_key}") String jwtSecretKey) {
         this.jwtExpirationTime = jwtExpirationTime;
         this.jwtSecretKey = jwtSecretKey;
     }

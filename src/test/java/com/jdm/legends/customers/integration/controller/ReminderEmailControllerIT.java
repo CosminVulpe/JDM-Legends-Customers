@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @ActiveProfiles("test-in-memory")
 @Sql("/add-temporary-customers.sql")
-@WithMockUser(username = "john.doe", authorities = {"ROLE_CLIENT"})
+@WithMockUser(username = "john smith", authorities = {"ROLE_CLIENT"})
 public class ReminderEmailControllerIT {
     @Autowired
     private MockMvc mockMvc;

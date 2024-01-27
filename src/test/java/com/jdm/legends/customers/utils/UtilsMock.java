@@ -36,12 +36,4 @@ public class UtilsMock {
             throw new RuntimeException("Something went wrong while deserializing the object", e);
         }
     }
-
-    public static <T> T readValueResponseEntity(String content, TypeReference<ResponseEntity<T>> responseEntityTypeReference) {
-        try {
-            return jackson.readValue(content, responseEntityTypeReference).getBody();
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Something went wrong while deserializing the object", e);
-        }
-    }
 }

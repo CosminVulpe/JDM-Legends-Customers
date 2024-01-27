@@ -25,6 +25,8 @@ public class UsernamePwdAuthenticationProvider implements AuthenticationProvider
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
 
+    private static final String PREFIX_ROLE = "ROLE_";
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String emailAddress = authentication.getName();
@@ -43,7 +45,7 @@ public class UsernamePwdAuthenticationProvider implements AuthenticationProvider
     }
 
     private List<SimpleGrantedAuthority> getAuthorities(Role roles) {
-        return roles.getRolesType().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role.name())).toList();
+        return roles.getRolesType().stream().map(role -> new SimpleGrantedAuthority(PREFIX_ROLE + role.name())).toList();
     }
 
     @Override
