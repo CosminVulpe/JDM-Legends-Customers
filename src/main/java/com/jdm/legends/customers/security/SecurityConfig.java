@@ -29,7 +29,7 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         // Protection of CSRF
         httpSecurity.csrf(config ->
-                config.ignoringAntMatchers("/register-customer/**", "/temporary-customer/**", "/sign")
+                config.ignoringAntMatchers("/register-customer/**", "/temporary-customer/**")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
 
         // Add custom filters
@@ -41,9 +41,10 @@ public class SecurityConfig {
 
         // Route protection
         httpSecurity.authorizeHttpRequests(requests ->
-                        requests.antMatchers("/sign").authenticated()
-                                .antMatchers("/register-customer/**", "/temporary-customer/**").permitAll()
-                                .antMatchers("/reminder-email/**").hasAnyRole(CLIENT.name(), POTENTIAL_CLIENT.name())
+                        requests.antMatchers("/register-customer/**", "/temporary-customer/**").permitAll()
+                                .antMatchers("/sign").authenticated()
+                                .antMatchers("/reminder-email/*").hasAnyRole(CLIENT.name(), POTENTIAL_CLIENT.name())
+                                .antMatchers("/reminder-email/all").permitAll()
                 )
                 .httpBasic(withDefaults())
                 .formLogin(withDefaults());

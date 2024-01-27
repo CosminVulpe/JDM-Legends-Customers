@@ -5,6 +5,7 @@ import com.jdm.legends.customers.service.entity.Customer;
 import com.jdm.legends.customers.service.entity.Role;
 import com.jdm.legends.customers.service.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
+@Slf4j
 @RequiredArgsConstructor
 public class UsernamePwdAuthenticationProvider implements AuthenticationProvider {
     private final CustomerRepository customerRepository;
@@ -35,7 +37,9 @@ public class UsernamePwdAuthenticationProvider implements AuthenticationProvider
                 .orElseThrow(() -> new EntityNotFoundException("No customer registered with this details"));
 
         if (!passwordEncoder.matches(pwd, customer.getPwd())) {
-            throw new BadCredentialsException("Invalid password");
+            String invalidPasswordMdg = "Invalid password";
+            log.error(invalidPasswordMdg);
+            throw new BadCredentialsException(invalidPasswordMdg);
         }
 
         List<GrantedAuthority> authorities = new ArrayList<>(

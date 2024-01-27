@@ -16,7 +16,8 @@ public class ConfigGlobalCors implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns("http://localhost:3000/")
+                .allowedOriginPatterns("http://localhost:3000")
+                .allowedMethods("*")
                 .allowedHeaders("*")
                 .exposedHeaders("Authorization")
                 .allowCredentials(true)
