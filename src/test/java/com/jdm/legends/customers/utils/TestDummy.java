@@ -49,7 +49,7 @@ public class TestDummy {
                 .emailAddress(MAIL)
                 .phoneNumber("123123123123")
                 .userName(USERNAME)
-                .pwd("password")
+                .pwd("IloveGrandpa")
                 .fullName(FULL_NAME)
                 .role(role)
                 .build();
