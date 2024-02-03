@@ -1,11 +1,9 @@
 package com.jdm.legends.customers.unit;
 
-import com.jdm.legends.customers.controller.dto.CustomerRequest;
 import com.jdm.legends.customers.service.CustomerService;
 import com.jdm.legends.customers.service.entity.Customer;
 import com.jdm.legends.customers.service.repository.CustomerRepository;
 import com.jdm.legends.customers.service.repository.RoleRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,9 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpStatus.CONFLICT;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CustomerServiceUnitTest {
