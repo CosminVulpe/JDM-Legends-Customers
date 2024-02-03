@@ -1,5 +1,6 @@
 package com.jdm.legends.customers.utils;
 
+import com.jdm.legends.customers.controller.dto.CustomerRequest;
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerRequest;
 import com.jdm.legends.customers.service.entity.Customer;
 import com.jdm.legends.customers.service.entity.ReminderEmail;
@@ -53,5 +54,12 @@ public class TestDummy {
                 .fullName(FULL_NAME)
                 .role(role)
                 .build();
+    }
+
+    public static CustomerRequest getCustomerRequest() {
+        Customer customMock = getCustomMock();
+        return new CustomerRequest(customMock.getFullName(), customMock.getUserName()
+                , customMock.getRole().getRolesType(), customMock.getPhoneNumber(),
+                customMock.getEmailAddress(), customMock.getPwd());
     }
 }
