@@ -1,7 +1,6 @@
 package com.jdm.legends.customers.integration.service;
 
 import com.jdm.legends.customers.service.CustomerService;
-import com.jdm.legends.customers.service.entity.Customer;
 import com.jdm.legends.customers.service.repository.CustomerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
