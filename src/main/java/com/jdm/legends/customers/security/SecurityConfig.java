@@ -1,5 +1,6 @@
 package com.jdm.legends.customers.security;
 
+import com.jdm.legends.customers.cors.ConfigGlobalCors;
 import com.jdm.legends.customers.security.filters.CsrfCookieFilter;
 import com.jdm.legends.customers.security.filters.JwtTokenGeneratorFilter;
 import com.jdm.legends.customers.security.filters.JwtTokenValidationFilter;
@@ -24,6 +25,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfig {
     private static final int PASSWORD_ENCODER_STRENGTH = 10;
     private final JwtGeneratorService jwtGeneratorService;
+    private final ConfigGlobalCors cors;
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -31,6 +33,8 @@ public class SecurityConfig {
         httpSecurity.csrf(config ->
                 config.ignoringAntMatchers("/register-customer/**", "/temporary-customer/**")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
+
+        httpSecurity.cors(securityCorsConfigurer -> securityCorsConfigurer.configurationSource(cors.corsConfigurationSource()));
 
         // Add custom filters
         httpSecurity.addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
