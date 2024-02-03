@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("test-in-memory")
 @Transactional
-public class CustomerSignController {
+public class CustomerSignControllerIT {
     @Autowired
     private MockMvc mockMvc;
 
