@@ -1,7 +1,7 @@
 package com.jdm.legends.customers.integration.controller;
 
-import com.jdm.legends.customers.repository.ReminderEmailRepository;
-import com.jdm.legends.customers.repository.TemporaryCustomerRepository;
+import com.jdm.legends.customers.service.repository.ReminderEmailRepository;
+import com.jdm.legends.customers.service.repository.TemporaryCustomerRepository;
 import com.jdm.legends.customers.service.entity.ReminderEmail;
 import com.jdm.legends.customers.service.entity.TemporaryCustomer;
 import com.jdm.legends.customers.utils.TestDummy;
@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @ActiveProfiles("test-in-memory")
 @Sql("/add-temporary-customers.sql")
+@WithMockUser(username = "john smith", authorities = {"ROLE_CLIENT"})
 public class ReminderEmailControllerIT {
     @Autowired
     private MockMvc mockMvc;

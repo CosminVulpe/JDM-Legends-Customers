@@ -5,10 +5,13 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Roles {
+public enum RolesType {
     POTENTIAL_CLIENT("Potential Client"),
+    CLIENT("Client"),
     ANONYMOUS("Anonymous"),
     ADMIN("Admin");
 
     private final String value;
+
 }
+

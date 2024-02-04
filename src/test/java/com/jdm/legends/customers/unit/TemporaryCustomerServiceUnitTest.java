@@ -4,7 +4,7 @@ import com.jdm.legends.customers.controller.dto.OrderIdRequest;
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerDTO;
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerIdResponse;
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerRequest;
-import com.jdm.legends.customers.repository.TemporaryCustomerRepository;
+import com.jdm.legends.customers.service.repository.TemporaryCustomerRepository;
 import com.jdm.legends.customers.service.TemporaryCustomerService;
 import com.jdm.legends.customers.service.TemporaryCustomerService.TemporaryCustomerByIdException;
 import com.jdm.legends.customers.service.entity.TemporaryCustomer;

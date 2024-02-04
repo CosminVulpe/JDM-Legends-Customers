@@ -3,7 +3,7 @@ package com.jdm.legends.customers.integration.service;
 import com.jdm.legends.customers.controller.dto.OrderIdRequest;
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerDTO;
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerIdResponse;
-import com.jdm.legends.customers.repository.TemporaryCustomerRepository;
+import com.jdm.legends.customers.service.repository.TemporaryCustomerRepository;
 import com.jdm.legends.customers.service.TemporaryCustomerService;
 import com.jdm.legends.customers.service.TemporaryCustomerService.TemporaryCustomerByIdException;
 import com.jdm.legends.customers.service.entity.TemporaryCustomer;
@@ -20,7 +20,6 @@ import java.util.List;
 import static com.jdm.legends.customers.utils.TestDummy.getTemporaryCustomerRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 
 @SpringBootTest

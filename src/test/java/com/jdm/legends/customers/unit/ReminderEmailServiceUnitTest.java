@@ -1,6 +1,6 @@
 package com.jdm.legends.customers.unit;
 
-import com.jdm.legends.customers.repository.ReminderEmailRepository;
+import com.jdm.legends.customers.service.repository.ReminderEmailRepository;
 import com.jdm.legends.customers.service.ReminderEmailService;
 import com.jdm.legends.customers.service.entity.ReminderEmail;
 import org.assertj.core.api.Assertions;

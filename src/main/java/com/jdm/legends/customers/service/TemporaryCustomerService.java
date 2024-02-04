@@ -5,7 +5,7 @@ import com.jdm.legends.customers.controller.dto.TemporaryCustomerDTO;
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerIdResponse;
 import com.jdm.legends.customers.controller.dto.TemporaryCustomerRequest;
 import com.jdm.legends.customers.controller.dto.WinnerCustomerResponse;
-import com.jdm.legends.customers.repository.TemporaryCustomerRepository;
+import com.jdm.legends.customers.service.repository.TemporaryCustomerRepository;
 import com.jdm.legends.customers.service.entity.TemporaryCustomer;
 import com.jdm.legends.customers.service.mapping.TemporaryCustomerMapper;
 import com.jdm.legends.customers.service.repository.DealershipCarsRepo;
