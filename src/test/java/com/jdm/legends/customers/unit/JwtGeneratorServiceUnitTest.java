@@ -12,6 +12,7 @@ import javax.crypto.SecretKey;
 @ExtendWith(MockitoExtension.class)
 public class JwtGeneratorServiceUnitTest {
     private JwtGeneratorService jwtGeneratorService;
+
     @BeforeEach
     void init() {
         jwtGeneratorService = new JwtGeneratorService(30000000
