@@ -99,7 +99,6 @@ public class CustomerService {
         return (request.fullName() == null || request.userName() == null)
                 || (request.fullName() != null && request.fullName().isBlank())
                 || (request.userName() != null && request.userName().isBlank());
-
     }
 
 }
