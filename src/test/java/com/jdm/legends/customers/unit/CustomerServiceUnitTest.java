@@ -20,7 +20,6 @@ import static com.jdm.legends.customers.utils.TestDummy.getCustomMock;
 import static com.jdm.legends.customers.utils.TestDummy.getCustomerRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.*;
 
@@ -37,34 +36,29 @@ public class CustomerServiceUnitTest {
     @InjectMocks
     private CustomerService customerService;
 
-//    @Test
-//    void registerCustomerSuccessfully() {
-//        when(repository.findCustomerByEmailAddress(any()))
-//                .thenReturn(Optional.empty());
-//        when(repository.save(any())).thenReturn(Customer.builder().id(1L).role(getCustomMock().getRole()).build());
-//
-//        ResponseEntity<HttpStatus> httpStatusResponseEntity = customerService.registerCustomer(getCustomerRequest());
-//        assertThat(httpStatusResponseEntity.getStatusCode()).isEqualTo(CREATED);
-//        verify(roleRepository).save(any());
-//    }
-//
-//    @Test
-//    void registerCustomerReturnConflictCode() {
-//        when(repository.findCustomerByEmailAddress(any()))
-//                .thenReturn(Optional.of(getCustomMock()));
-//
-//        ResponseEntity<HttpStatus> httpStatusResponseEntity = customerService.registerCustomer(getCustomerRequest());
-//        assertThat(httpStatusResponseEntity.getStatusCode()).isEqualTo(CONFLICT);
-//    }
-//
-//    @Test
-//    void registerCustomerFailsWhenSaveInDB() {
-//        when(repository.findCustomerByEmailAddress(any()))
-//                .thenReturn(Optional.empty());
-//        when(repository.save(any())).thenThrow(PersistenceException.class);
-//
-//        ResponseEntity<HttpStatus> httpStatusResponseEntity = customerService.registerCustomer(getCustomerRequest());
-//        assertThat(httpStatusResponseEntity.getStatusCode()).isEqualTo(INTERNAL_SERVER_ERROR);
-//        verify(roleRepository).save(any());
-//    }
+    @Test
+    void registerCustomerSuccessfully() {
+        when(repository.findCustomerByEmailAddress(any())).thenReturn(Optional.empty());
+        when(repository.save(any())).thenReturn(Customer.builder().id(1L).role(getCustomMock().getRole()).build());
+
+        ResponseEntity<HttpStatus> httpStatusResponseEntity = customerService.registerCustomer(getCustomerRequest(), null);
+        assertThat(httpStatusResponseEntity.getStatusCode()).isEqualTo(CREATED);
+    }
+
+    @Test
+    void registerCustomerReturnConflictCode() {
+        when(repository.findCustomerByEmailAddress(any())).thenReturn(Optional.of(getCustomMock()));
+
+        ResponseEntity<HttpStatus> httpStatusResponseEntity = customerService.registerCustomer(getCustomerRequest(), null);
+        assertThat(httpStatusResponseEntity.getStatusCode()).isEqualTo(CONFLICT);
+    }
+
+    @Test
+    void registerCustomerFailsWhenSaveInDB() {
+        when(repository.findCustomerByEmailAddress(any())).thenReturn(Optional.empty());
+        when(repository.save(any())).thenThrow(PersistenceException.class);
+
+        ResponseEntity<HttpStatus> httpStatusResponseEntity = customerService.registerCustomer(getCustomerRequest(), null);
+        assertThat(httpStatusResponseEntity.getStatusCode()).isEqualTo(INTERNAL_SERVER_ERROR);
+    }
 }
