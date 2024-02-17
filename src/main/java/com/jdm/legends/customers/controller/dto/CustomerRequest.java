@@ -1,16 +1,16 @@
 package com.jdm.legends.customers.controller.dto;
 
 import com.jdm.legends.customers.service.enums.RolesType;
+import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public record CustomerRequest(
-        @NotBlank
+        @Nullable
         String fullName,
-        @NotBlank
+        @Nullable
         String userName,
 
         List<RolesType> rolesTypes,

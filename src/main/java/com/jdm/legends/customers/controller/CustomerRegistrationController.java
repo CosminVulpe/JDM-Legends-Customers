@@ -16,7 +16,8 @@ public class CustomerRegistrationController {
     private final CustomerService registrationService;
 
     @PostMapping
-    public ResponseEntity<HttpStatus> registerCustomer(@RequestBody @Valid CustomerRequest request) {
-       return registrationService.registerCustomer(request);
+    public ResponseEntity<HttpStatus> registerCustomer(@RequestBody @Valid CustomerRequest request
+            , @RequestParam(value = "tempCustomerId", required = false) Long tempCustomerId) {
+       return registrationService.registerCustomer(request, tempCustomerId);
     }
 }

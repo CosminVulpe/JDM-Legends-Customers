@@ -25,4 +25,7 @@ public class Customer {
     @JoinColumn(name = "roles_id", referencedColumnName = "id")
     private Role role;
     private String pwd;
+
+    private String historyBidId;
+    private Long orderId;
 }
