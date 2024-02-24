@@ -19,6 +19,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import static com.jdm.legends.customers.service.enums.RolesType.CLIENT;
 import static com.jdm.legends.customers.service.enums.RolesType.POTENTIAL_CLIENT;
 import static org.springframework.security.config.Customizer.withDefaults;
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
 @RequiredArgsConstructor
@@ -31,7 +32,7 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         // Protection of CSRF
         httpSecurity.csrf(config ->
-                config.ignoringAntMatchers("/register-customer/**", "/temporary-customer/**")
+                config.ignoringAntMatchers("/register-customer/**", "/temporary-customer/**", "/customer/**")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
 
         httpSecurity.cors(securityCorsConfigurer -> securityCorsConfigurer.configurationSource(cors.corsConfigurationSource()));
@@ -41,7 +42,7 @@ public class SecurityConfig {
         httpSecurity.addFilterAfter(new JwtTokenGeneratorFilter(jwtGeneratorService), BasicAuthenticationFilter.class);
         httpSecurity.addFilterBefore(new JwtTokenValidationFilter(jwtGeneratorService), BasicAuthenticationFilter.class);
 
-        httpSecurity.sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        httpSecurity.sessionManagement(configurer -> configurer.sessionCreationPolicy(STATELESS));
 
         // Route protection
         httpSecurity.authorizeHttpRequests(requests ->

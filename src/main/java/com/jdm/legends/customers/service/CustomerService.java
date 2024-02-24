@@ -51,6 +51,10 @@ public class CustomerService {
         return registerTempCustomerToNewFullCustomer(request, tempCustomerId);
     }
 
+    public boolean checkEmail(String email) {
+        return customerRepository.findCustomerByEmailAddress(email).isPresent();
+    }
+
     private ResponseEntity<HttpStatus> registerTempCustomerToNewFullCustomer(CustomerRequest request, Long tempCustomerId) {
         Optional<TemporaryCustomer> optionalTemporaryCustomer = temporaryCustomerRepository.findById(tempCustomerId);
         if (optionalTemporaryCustomer.isEmpty()) {

@@ -15,14 +15,14 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/temporary-customer")
+@RequestMapping("/temporary-customer")
 public class TemporaryCustomerController {
     private final TemporaryCustomerService service;
     private final EmailNotificationService emailNotificationService;
 
-    @PostMapping(path = "/save/{historyBidId}")
-    public TemporaryCustomerIdResponse saveTempCustomer(@RequestBody TemporaryCustomerRequest request, @PathVariable Long historyBidId){
-       return service.saveTempCustomer(request ,historyBidId);
+    @PostMapping("/save/{historyBidId}")
+    public TemporaryCustomerIdResponse saveTempCustomer(@RequestBody TemporaryCustomerRequest request, @PathVariable Long historyBidId) {
+        return service.saveTempCustomer(request, historyBidId);
     }
 
     @GetMapping
@@ -35,13 +35,13 @@ public class TemporaryCustomerController {
         return service.getAllTempCustomerByHistoryBidId(historyBidId);
     }
 
-    @GetMapping(path = "/{temporaryCustomerId}")
+    @GetMapping("/{temporaryCustomerId}")
     public TemporaryCustomerDTO getTempCustomerById(@PathVariable("temporaryCustomerId") Long temporaryCustomerId) {
         return service.getTempCustomerById(temporaryCustomerId);
     }
 
-    @GetMapping(path = "select/winner/{carId}")
-    public ResponseEntity<WinnerCustomerResponse> selectWinnerCustomer(@PathVariable Long carId){
+    @GetMapping("select/winner/{carId}")
+    public ResponseEntity<WinnerCustomerResponse> selectWinnerCustomer(@PathVariable Long carId) {
         ResponseEntity<WinnerCustomerResponse> winnerCustomerResponseResponseEntity = service.selectWinnerCustomer(carId);
         WinnerCustomerResponse winnerCustomerResponse = winnerCustomerResponseResponseEntity.getBody();
         emailNotificationService.sendEmail(winnerCustomerResponse.emailAddress(), winnerCustomerResponse.tempCustomerId());
@@ -49,7 +49,7 @@ public class TemporaryCustomerController {
     }
 
     @GetMapping(path = "get/winner/{carId}")
-    public ResponseEntity<WinnerCustomerResponse> getWinnerCustomer(@PathVariable Long carId){
+    public ResponseEntity<WinnerCustomerResponse> getWinnerCustomer(@PathVariable Long carId) {
         return service.selectWinnerCustomer(carId);
     }
 
