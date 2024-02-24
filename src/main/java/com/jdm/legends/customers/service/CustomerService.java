@@ -1,5 +1,6 @@
 package com.jdm.legends.customers.service;
 
+import com.jdm.legends.customers.controller.dto.CustomerIdResponse;
 import com.jdm.legends.customers.controller.dto.CustomerRequest;
 import com.jdm.legends.customers.service.entity.Customer;
 import com.jdm.legends.customers.service.entity.Role;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.PersistenceException;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,6 +55,14 @@ public class CustomerService {
 
     public boolean checkEmail(String email) {
         return customerRepository.findCustomerByEmailAddress(email).isPresent();
+    }
+
+    public ResponseEntity<CustomerIdResponse> getIdByEmailAddress(String customerEmail) {
+        String emailDecoded = new String(Base64.getDecoder().decode(customerEmail.getBytes()));
+
+        Optional<Customer> customerByEmailAddress = repository.findCustomerByEmailAddress(emailDecoded);
+        return customerByEmailAddress.map(customer -> ResponseEntity.ok(new CustomerIdResponse(customer.getId())))
+                .orElseGet(() -> ResponseEntity.status(NOT_FOUND).build());
     }
 
     private ResponseEntity<HttpStatus> registerTempCustomerToNewFullCustomer(CustomerRequest request, Long tempCustomerId) {
