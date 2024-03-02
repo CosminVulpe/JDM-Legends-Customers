@@ -31,7 +31,7 @@ public class JwtGeneratorService {
                 .setIssuer("JDM-Legends-Customers")
                 .setSubject("JWT Token")
                 .claim("username", authentication.getName())
-                .claim("authorization", computeAuthorities(authentication.getAuthorities()))
+                .claim("authorities", computeAuthorities(authentication.getAuthorities()))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationTime))
                 .signWith(secretKey)

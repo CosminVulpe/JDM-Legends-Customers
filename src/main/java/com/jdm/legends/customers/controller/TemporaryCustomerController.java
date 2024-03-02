@@ -30,7 +30,7 @@ public class TemporaryCustomerController {
         return service.getAllTempCustomers();
     }
 
-    @GetMapping("get/history/{historyBidId}")
+    @GetMapping("/get/history/{historyBidId}")
     public List<TemporaryCustomerDTO> getAllTempCustomerByHistoryBidId(@PathVariable String historyBidId) {
         return service.getAllTempCustomerByHistoryBidId(historyBidId);
     }
@@ -40,7 +40,7 @@ public class TemporaryCustomerController {
         return service.getTempCustomerById(temporaryCustomerId);
     }
 
-    @GetMapping("select/winner/{carId}")
+    @GetMapping("/select/winner/{carId}")
     public ResponseEntity<WinnerCustomerResponse> selectWinnerCustomer(@PathVariable Long carId) {
         ResponseEntity<WinnerCustomerResponse> winnerCustomerResponseResponseEntity = service.selectWinnerCustomer(carId);
         WinnerCustomerResponse winnerCustomerResponse = winnerCustomerResponseResponseEntity.getBody();
@@ -48,7 +48,7 @@ public class TemporaryCustomerController {
         return winnerCustomerResponseResponseEntity;
     }
 
-    @GetMapping(path = "get/winner/{carId}")
+    @GetMapping(path = "/get/winner/{carId}")
     public ResponseEntity<WinnerCustomerResponse> getWinnerCustomer(@PathVariable Long carId) {
         return service.selectWinnerCustomer(carId);
     }

@@ -1,5 +1,6 @@
 package com.jdm.legends.customers.service;
 
+import com.jdm.legends.customers.controller.dto.CustomerDTO;
 import com.jdm.legends.customers.controller.dto.CustomerIdResponse;
 import com.jdm.legends.customers.controller.dto.CustomerRequest;
 import com.jdm.legends.customers.service.entity.Customer;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,6 +76,24 @@ public class CustomerService {
 
         Customer savedCustomer = repository.save(customer);
         return ResponseEntity.ok(new CustomerIdResponse(savedCustomer.getId()));
+    }
+
+    public Optional<CustomerDTO> getHistoryBid(Authentication authentication, Long historyBid) {
+        String name = authentication.getName();
+        Optional<Customer> customerByEmailAddress = repository.findCustomerByEmailAddress(name);
+
+        if (customerByEmailAddress.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Customer customer = customerByEmailAddress.get();
+        boolean historyBidExists = customer.doesHistoryBidExists(String.valueOf(historyBid));
+        if (!historyBidExists) {
+            return Optional.empty();
+        }
+
+        return Optional.of(new CustomerDTO(customer.getId(), customer.getFullName()
+                ,customer.getUserName(), customer.getEmailAddress()));
     }
 
     private ResponseEntity<HttpStatus> registerTempCustomerToNewFullCustomer(CustomerRequest request, Long tempCustomerId) {

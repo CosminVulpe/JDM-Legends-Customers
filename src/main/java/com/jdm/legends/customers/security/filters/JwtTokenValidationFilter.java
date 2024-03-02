@@ -39,7 +39,7 @@ public class JwtTokenValidationFilter extends OncePerRequestFilter {
                 Claims claims = Jwts.parserBuilder()
                         .setSigningKey(secretKey)
                         .build()
-                        .parseClaimsJwt(headerJWT)
+                        .parseClaimsJws(headerJWT.replace(PREFIX_AUTHORIZATION, ""))
                         .getBody();
                 String username = (String) claims.get("username");
                 String authorities = (String) claims.get("authorities");

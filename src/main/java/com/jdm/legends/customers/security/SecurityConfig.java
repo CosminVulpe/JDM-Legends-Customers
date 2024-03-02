@@ -48,7 +48,10 @@ public class SecurityConfig {
         httpSecurity.authorizeHttpRequests(requests ->
                         requests.antMatchers("/sign").authenticated()
                                 .antMatchers("/reminder-email/*").hasAnyRole(CLIENT.name(), POTENTIAL_CLIENT.name())
-                                .antMatchers("/register-customer/**", "/temporary-customer/**", "/reminder-email/all").permitAll()
+                                .antMatchers("/register-customer/**"
+                                        , "/temporary-customer/**"
+                                        , "/customer/checkEmail/**"
+                                        , "/reminder-email/all").permitAll()
                 )
                 .httpBasic(withDefaults())
                 .formLogin(withDefaults());

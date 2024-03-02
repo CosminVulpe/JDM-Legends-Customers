@@ -1,11 +1,14 @@
 package com.jdm.legends.customers.service.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Arrays;
+import java.util.List;
 
 @Entity
 @Data
@@ -28,4 +31,14 @@ public class Customer {
 
     private String historyBidId;
     private Long orderId;
+
+    @JsonIgnore
+    public boolean doesHistoryBidExists(String historyBidIdRequest) {
+        boolean contains = historyBidId.contains(", ");
+        if (contains) {
+            List<String> ids = Arrays.stream(historyBidId.split(", ")).toList();
+            return ids.contains(historyBidIdRequest);
+        }
+        return historyBidId.equalsIgnoreCase(historyBidIdRequest);
+    }
 }
