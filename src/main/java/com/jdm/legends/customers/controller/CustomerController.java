@@ -20,8 +20,8 @@ public class CustomerController {
         return customerService.checkEmail(email.replaceAll("^\"|\"$", ""));
     }
 
-    @PostMapping("/getIdByEmail")
-    public ResponseEntity<CustomerIdResponse> assignHistoryBid(@RequestBody String customerEmail) {
-        return customerService.getIdByEmailAddress(customerEmail);
+    @PostMapping("/assign/{historyBidId}")
+    public ResponseEntity<CustomerIdResponse> assignHistoryBid(@RequestBody String customerEmail, @PathVariable String historyBidId) {
+        return customerService.getIdByEmailAddress(customerEmail, historyBidId);
     }
 }
