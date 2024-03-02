@@ -22,22 +22,19 @@ import static org.springframework.http.HttpStatus.OK;
 public class DealershipCarsRepo {
     private final TemporaryCustomerRepository repository;
     private final RestTemplate restTemplate;
-    private final int dealershipCarsServerPort;
-    private final String serverHost;
+    private final String jdmLegendDealershipCarsUrl;
 
     public DealershipCarsRepo(TemporaryCustomerRepository repository
             , RestTemplate restTemplate
-            , @Value("${jdm-legends-dealership-cars-port}") int dealershipCarsServerPort
-            , @Value("${server.host}") String serverHost) {
+            , @Value("${jdm-legends-dealership-cars-host}") String jdmLegendDealershipCarsUrl) {
         this.repository = repository;
         this.restTemplate = restTemplate;
-        this.dealershipCarsServerPort = dealershipCarsServerPort;
-        this.serverHost = serverHost;
+        this.jdmLegendDealershipCarsUrl = jdmLegendDealershipCarsUrl;
     }
 
     public ResponseEntity<WinnerCustomerResponse> selectWinnerCustomer(Long carId) {
         try {
-            UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(serverHost + dealershipCarsServerPort + "/car/max/bidValue/{carId}").buildAndExpand(carId);
+            UriComponents uriComponents = UriComponentsBuilder.fromHttpUrl(jdmLegendDealershipCarsUrl + "/car/max/bidValue/{carId}").buildAndExpand(carId);
             ResponseEntity<WinnerCustomerResponse> restTemplateForEntity = restTemplate.getForEntity(uriComponents.toUriString(), WinnerCustomerResponse.class);
 
             log.info("Response status {} endpoint {}", restTemplateForEntity.getStatusCodeValue(), uriComponents);
