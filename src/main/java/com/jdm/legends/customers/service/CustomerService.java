@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import javax.persistence.PersistenceException;
 import java.util.Base64;
@@ -58,7 +57,7 @@ public class CustomerService {
         return customerRepository.findCustomerByEmailAddress(email).isPresent();
     }
 
-    public ResponseEntity<CustomerIdResponse> getIdByEmailAddress(String customerEmail, String historyBidId) {
+    public ResponseEntity<CustomerIdResponse> assignHistoryBid(String customerEmail, String historyBidId) {
         String emailDecoded = new String(Base64.getDecoder().decode(customerEmail.getBytes()));
 
         Optional<Customer> customerByEmailAddress = repository.findCustomerByEmailAddress(emailDecoded);

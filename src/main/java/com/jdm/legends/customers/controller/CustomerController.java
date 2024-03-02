@@ -22,6 +22,6 @@ public class CustomerController {
 
     @PostMapping("/assign/{historyBidId}")
     public ResponseEntity<CustomerIdResponse> assignHistoryBid(@RequestBody String customerEmail, @PathVariable String historyBidId) {
-        return customerService.getIdByEmailAddress(customerEmail, historyBidId);
+        return customerService.assignHistoryBid(customerEmail, historyBidId);
     }
 }
